@@ -29,6 +29,7 @@
 
 <h1>🔥 테스트 중 🔥</h1>
 
+<button id="startBtn">읽기 시작</button>
 <div id="story">
   <p class="line">비가 내리고 있었다.</p>
   <p class="line">역에는 우리 둘뿐이었다.</p>
@@ -39,13 +40,22 @@
   const lines = document.querySelectorAll(".line");
   let index = 0;
 
-  document.addEventListener("click", () => {
+  const bgm = document.getElementById("bgm1");
+  const startBtn = document.getElementById("startBtn");
+
+  startBtn.addEventListener("click", (e) => {
+    e.stopPropagation(); // 버튼 클릭이 글 클릭으로 안 번지게
+    bgm.play();
+  });
+
+  document.body.addEventListener("click", () => {
     if (index < lines.length) {
       lines[index].classList.add("show");
       index++;
     }
   });
 </script>
+
 
 </body>
 </html>
