@@ -3,54 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <title>첫 번째 소설</title>
+
+  <style>
+    body {
+      font-family: serif;
+      font-size: 18px;
+      line-height: 1.8;
+      padding: 40px;
+      cursor: pointer;
+    }
+
+    .line {
+      opacity: 0;
+      transition: opacity 1s ease;
+      margin-bottom: 20px;
+    }
+
+    .line.show {
+      opacity: 1;
+    }
+  </style>
 </head>
-<style>
-  body {
-    font-family: serif;
-    font-size: 18px;
-    line-height: 1.8;
-    padding: 40px;
-    cursor: pointer;
-  }
-
-  .line {
-    opacity: 0;
-    transition: opacity 1s ease;
-    margin-bottom: 20px;
-  }
-
-  .line.show {
-    opacity: 1;
-  }
-</style>
 
 <body>
 
 <h1>내 소설 제목</h1>
 
-<button>읽기 시작</button>
-
 <div id="story">
-
-  <!-- 여기부터 -->
   <p class="line">비가 내리고 있었다.</p>
   <p class="line">역에는 우리 둘뿐이었다.</p>
   <p class="line">나는 그 사람의 이름을 부르지 못했다.</p>
-  <!-- 여기까지 -->
-
 </div>
-
 
 <script>
   const lines = document.querySelectorAll(".line");
   let index = 0;
 
-  document.body.addEventListener("click", () => {
+  document.addEventListener("click", () => {
     if (index < lines.length) {
       lines[index].classList.add("show");
       index++;
     }
   });
 </script>
+
 </body>
 </html>
