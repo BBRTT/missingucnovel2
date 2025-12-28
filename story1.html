@@ -5,48 +5,84 @@
   <title>첫 번째 소설</title>
 
   <style>
-    body {
-  font-family: serif;
-  font-size: 20px;
-  line-height: 1.8;
+  /* --------------------------
+   전체 페이지
+--------------------------- */
+body {
+  font-family: 'Courier New', Courier, monospace; /* 사각진 글꼴 */
+  font-size: 20px;               /* 기본 본문 글씨 크기 */
+  line-height: 1.8;              /* 줄 간격 넉넉히 */
   padding: 40px;
   cursor: pointer;
 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;           /* 글 가운데 정렬 */
+  background-color: #fafafa;     /* 은은한 배경색 */
 }
+
+/* --------------------------
+   소설 영역
+--------------------------- */
 #story {
-  max-width: 600px;
-  text-align: center;
+  max-width: 600px;              /* 가독성 좋은 최대 너비 */
+  text-align: center;            /* 글 가운데 정렬 */
 }
 
-    .line {
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      margin-bottom: 20px;
-    }
-
-    .line.show {
-      opacity: 1;
-    }
-    .line.hide {
-  opacity: 0;
+/* --------------------------
+   글 라인
+--------------------------- */
+.line {
+  opacity: 0;                     /* 기본 숨김 */
+  transition: opacity 0.4s ease;  /* 부드러운 페이드 */
+  margin-bottom: 20px;            /* 문단 간격 */
 }
 
+.line.show {
+  opacity: 1;                     /* 보여질 때 */
+}
+
+.line.hide {
+  opacity: 0;                     /* 사라질 때 */
+}
+
+/* --------------------------
+   제목
+--------------------------- */
+h1 {
+  font-family: 'Courier New', Courier, monospace; /* 제목도 동일 폰트 */
+  font-size: 50px;                /* 크기 크게 */
+  text-align: center;             /* 가운데 정렬 */
+  margin-bottom: 20px;            /* 버튼과 간격 */
+  color: #333;                    /* 진한 글씨 */
+}
+
+/* --------------------------
+   버튼
+--------------------------- */
 button {
   margin: 20px 0 40px;
   padding: 10px 24px;
   font-size: 16px;
-  border-radius: 999px;
+  border-radius: 999px;          /* 동그랗게 */
   border: 1px solid #ccc;
   background: white;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 button:hover {
   background: #f2f2f2;
 }
+
+/* --------------------------
+   강조용 이모지/스타일
+--------------------------- */
+h1 span.emoji {
+  font-size: 1.2em;               /* 이모지 조금 더 크게 */
+  margin: 0 5px;
+}
+
 
   </style>
 </head>
@@ -74,40 +110,40 @@ button:hover {
 
 <script>
   // ------------------------------
-  // easing 기반 페이드 인 / 페이드 아웃
+  // requestAnimationFrame 기반 부드러운 페이드
   // ------------------------------
-  function fadeIn(audio, duration = 1500) {
+  function fadeInSmooth(audio, duration = 1500) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
     audio.play();
-    const stepTime = 20; // 20ms마다 업데이트
-    const steps = duration / stepTime;
-    let step = 0;
-    const interval = setInterval(() => {
-      step++;
-      // ease-in 효과 적용 (초반 천천히, 후반 빠르게)
-      audio.volume = Math.min(Math.pow(step / steps, 2), 1);
-      if (step >= steps) clearInterval(interval);
-    }, stepTime);
+    const startTime = performance.now();
+    
+    function step(now) {
+      const t = Math.min((now - startTime) / duration, 1);
+      audio.volume = Math.sin(t * Math.PI / 2); // 부드러운 페이드 인
+      if (t < 1) requestAnimationFrame(step);
+    }
+    
+    requestAnimationFrame(step);
   }
 
-  function fadeOut(audio, duration = 1000, callback) {
-    const stepTime = 20;
-    const steps = duration / stepTime;
-    let step = 0;
+  function fadeOutSmooth(audio, duration = 1000, callback) {
+    const startTime = performance.now();
     const initialVolume = audio.volume;
-    const interval = setInterval(() => {
-      step++;
-      // ease-out 효과 적용 (초반 빠르게, 후반 천천히)
-      audio.volume = Math.max(initialVolume * (1 - Math.pow(step / steps, 2)), 0);
-      if (step >= steps) {
+    
+    function step(now) {
+      const t = Math.min((now - startTime) / duration, 1);
+      audio.volume = initialVolume * Math.cos(t * Math.PI / 2); // 부드러운 페이드 아웃
+      if (t < 1) requestAnimationFrame(step);
+      else {
         audio.pause();
         audio.currentTime = 0;
-        clearInterval(interval);
         if (callback) callback();
       }
-    }, stepTime);
+    }
+    
+    requestAnimationFrame(step);
   }
 
   // ------------------------------
@@ -124,7 +160,7 @@ button:hover {
   // ------------------------------
   startBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    fadeIn(bgm1, 1500);
+    fadeInSmooth(bgm1, 1500);
   });
 
   // ------------------------------
@@ -150,7 +186,7 @@ button:hover {
 
     // 음악 전환
     if (currentLine.classList.contains("bgm2-start")) {
-      fadeOut(bgm1, 1000, () => fadeIn(bgm2, 1500));
+      fadeOutSmooth(bgm1, 1000, () => fadeInSmooth(bgm2, 1500));
     }
 
     index++;
