@@ -74,48 +74,45 @@ button:hover {
 
 <script>
   // ------------------------------
-  // 페이드 인 / 페이드 아웃
+  // Interval 기반 페이드 인/아웃
   // ------------------------------
-  function fadeIn(audio, duration = 1000) {
+  function fadeIn(audio, duration = 1500) {
+    audio.pause();
+    audio.currentTime = 0;
     audio.volume = 0;
     audio.play();
-    const startTime = performance.now();
-
-    function step(now) {
-      const progress = (now - startTime) / duration;
-      audio.volume = Math.min(progress, 1);
-      if (progress < 1) requestAnimationFrame(step);
-    }
-
-    requestAnimationFrame(step);
+    const stepTime = 50;
+    const steps = duration / stepTime;
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      audio.volume = Math.min(step / steps, 1);
+      if (step >= steps) clearInterval(interval);
+    }, stepTime);
   }
 
   function fadeOut(audio, duration = 1000, callback) {
-    const startTime = performance.now();
+    const stepTime = 50;
+    const steps = duration / stepTime;
+    let step = 0;
     const initialVolume = audio.volume;
-
-    function step(now) {
-      const progress = (now - startTime) / duration;
-      audio.volume = Math.max(initialVolume * (1 - progress), 0);
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        audio.volume = 0;
+    const interval = setInterval(() => {
+      step++;
+      audio.volume = Math.max(initialVolume * (1 - step / steps), 0);
+      if (step >= steps) {
         audio.pause();
         audio.currentTime = 0;
+        clearInterval(interval);
         if (callback) callback();
       }
-    }
-
-    requestAnimationFrame(step);
+    }, stepTime);
   }
 
   // ------------------------------
-  // 변수 정의
+  // 글 + 음악 변수
   // ------------------------------
   const lines = document.querySelectorAll(".line");
   let index = 0;
-
   const bgm1 = document.getElementById("bgm1");
   const bgm2 = document.getElementById("bgm2");
   const startBtn = document.getElementById("startBtn");
@@ -124,19 +121,19 @@ button:hover {
   // BGM 시작 버튼
   // ------------------------------
   startBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // 버튼 클릭이 글 클릭으로 번지지 않게
-    fadeIn(bgm1, 1500);  // 첫 음악 부드럽게 페이드 인
+    e.stopPropagation();
+    fadeIn(bgm1, 1500);
   });
 
   // ------------------------------
-  // 화면 클릭 이벤트 (글 페이드 + 음악 전환)
+  // 화면 클릭 이벤트
   // ------------------------------
   document.body.addEventListener("click", () => {
     if (index >= lines.length) return;
 
     const currentLine = lines[index];
 
-    // 이전에 사라져야 할 문장 처리
+    // 이전 글 페이드 아웃
     const toDisappear = document.querySelectorAll(".disappear");
     toDisappear.forEach(line => {
       if (line !== currentLine) {
@@ -145,18 +142,16 @@ button:hover {
       }
     });
 
-    // 현재 문장 등장
+    // 현재 글 등장
     currentLine.classList.add("show");
     currentLine.classList.remove("hide");
 
-    // ------------------------------
     // 음악 전환
-    // ------------------------------
     if (currentLine.classList.contains("bgm2-start")) {
       fadeOut(bgm1, 1000, () => fadeIn(bgm2, 1500));
     }
 
-    index++; // 다음 문장으로 진행
+    index++;
   });
 </script>
 
