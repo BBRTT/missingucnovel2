@@ -51,15 +51,19 @@ body {
   opacity: 0;                     /* 사라질 때 */
 }
 
-    img.line {
-  border: none;       /* 테두리 없앰 */
-  max-width: 100%;
-  height: auto;
-  margin: 20px 0;
-  border-radius: 8px;
-  opacity: 0;
+img.line {
+  max-width: 100%;      /* 화면 가로폭에 맞춰 자동 축소 */
+  height: auto;         /* 세로 비율 유지 */
+  margin: 20px 0;       /* 위아래 여백 */
+  border-radius: 8px;   /* 모서리 둥글게 */
+  opacity: 0;           /* 페이드 인용 */
   transition: opacity 0.4s ease;
 }
+
+img.line.show {
+  opacity: 1;
+}
+
 
 /* --------------------------
    제목
@@ -70,16 +74,7 @@ h1 {
   margin-bottom: 20px;
   color: #333;
 
-  background-color: #fff;   /* 배경색 */
-  border: 2px solid #ccc;   /* 테두리 */
-  padding: 10px 30px;       /* 위아래/좌우 여백 */
-  border-radius: 0;          /* 모서리 각지게 */
-  display: inline-block;     /* 칸 크기 글씨만큼 */
-}
-
-    
-
-
+ 
 
   </style>
 </head>
