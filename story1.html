@@ -66,13 +66,27 @@ h1 {
   display: inline-block;     /* 칸 크기 글씨만큼 */
 }
 
+    
+img.line {
+  max-width: 100%;      /* 화면 가로폭에 맞춰 자동 축소 */
+  height: auto;         /* 세로 비율 유지 */
+  margin: 20px 0;       /* 위아래 여백 */
+  border-radius: 8px;   /* 모서리 둥글게 */
+  opacity: 0;           /* 페이드 인용 */
+  transition: opacity 0.4s ease;
+}
+
+img.line.show {
+  opacity: 1;
+}
+
 
   </style>
 </head>
 
 <body>
 
-<h1>🔥 테스트 중 🔥</h1>
+<h1>주먹밥<h1>
 
 
 <audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
@@ -82,6 +96,7 @@ h1 {
 <audio id="bgm5" src="bgm5.mp3"></audio>
   
 <div id="story">
+  <img class="line" src="rainy_station.jpg" alt="비 내리는 역" />
   <p class="line disappear bgm1-start">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
