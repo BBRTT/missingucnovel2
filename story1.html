@@ -30,6 +30,10 @@
     .line.show {
       opacity: 1;
     }
+    .line.hide {
+  opacity: 0;
+}
+
 button {
   margin: 20px 0 40px;
   padding: 10px 24px;
@@ -57,9 +61,11 @@ button:hover {
   <p class="line">안녕하세요! 잘 지내셨나요?</p>
   <p class="line">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
-  <p class="line">       </p>
-  <p class="line">       </p>
-  <p class="line">       </p>
+  <p class="line">*</p>
+  <p class="line">*</p>
+  <p class="line">*</p>
+  <p class="line">*</p>
+  <p class="line">*</p>
   <p class="line"> 첫문장</p>
   
 </div>
@@ -76,12 +82,23 @@ button:hover {
     bgm.play();
   });
 
-  document.body.addEventListener("click", () => {
-    if (index < lines.length) {
-      lines[index].classList.add("show");
-      index++;
-    }
-  });
+document.body.addEventListener("click", () => {
+  if (index >= lines.length) return;
+
+  // 이전 문장 사라지기
+  if (index > 0) {
+    lines[index - 1].classList.remove("show");
+    lines[index - 1].classList.add("hide");
+  }
+
+  // 현재 문장 등장
+  const currentLine = lines[index];
+  currentLine.classList.add("show");
+  currentLine.classList.remove("hide");
+
+  index++;
+});
+
 </script>
 
 
