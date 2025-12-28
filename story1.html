@@ -73,6 +73,36 @@ button:hover {
 </div>
 
 <script>
+  // 볼륨 0에서 1로 천천히 올리기
+function fadeIn(audio, duration = 1000) {
+  audio.volume = 0;
+  audio.play();
+  const step = 50; // 50ms마다 증가
+  const increment = step / duration;
+  const interval = setInterval(() => {
+    if (audio.volume < 1) {
+      audio.volume = Math.min(audio.volume + increment, 1);
+    } else {
+      clearInterval(interval);
+    }
+  }, step);
+}
+
+// 볼륨 1에서 0으로 천천히 내리기
+function fadeOut(audio, duration = 1000) {
+  const step = 50;
+  const decrement = step / duration;
+  const interval = setInterval(() => {
+    if (audio.volume > 0) {
+      audio.volume = Math.max(audio.volume - decrement, 0);
+    } else {
+      audio.pause();
+      audio.currentTime = 0;
+      clearInterval(interval);
+    }
+  }, step);
+}
+
   const lines = document.querySelectorAll(".line");
   let index = 0;
 
@@ -103,11 +133,11 @@ document.body.addEventListener("click", () => {
   currentLine.classList.remove("hide");
 
   // 음악 전환
-  if (currentLine.classList.contains("bgm2-start")) {
-    bgm1.pause();
-    bgm1.currentTime = 0;
-    bgm2.play();
-  }
+
+if (currentLine.classList.contains("bgm2-start")) {
+  fadeOut(bgm1);      // 기존 음악 부드럽게 사라짐
+  fadeIn(bgm2, 1500); // 새 음악 1.5초 동안 페이드 인
+}
 
   index++;
 });
