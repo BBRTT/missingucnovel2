@@ -62,24 +62,6 @@ h1 {
 }
 
 /* --------------------------
-   버튼
---------------------------- */
-button {
-  margin: 20px 0 40px;
-  padding: 10px 24px;
-  font-size: 16px;
-  border-radius: 999px;          /* 동그랗게 */
-  border: 1px solid #ccc;
-  background: white;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover {
-  background: #f2f2f2;
-}
-
-/* --------------------------
    강조용 이모지/스타일
 --------------------------- */
 h1 span.emoji {
@@ -98,9 +80,12 @@ h1 span.emoji {
 <button id="startBtn">BGM</button>
 <audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
 <audio id="bgm2" src="Classic 2.m4a"></audio>
-
+<audio id="bgm3" src="bgm3.mp3"></audio>
+<audio id="bgm4" src="bgm4.mp3"></audio>
+<audio id="bgm5" src="bgm5.mp3"></audio>
+  
 <div id="story">
-  <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear bgm1-start">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
   <p class="line">*</p>
@@ -122,23 +107,20 @@ h1 span.emoji {
     audio.volume = 0;
     audio.play();
     const startTime = performance.now();
-    
     function step(now) {
       const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = Math.sin(t * Math.PI / 2); // 부드러운 페이드 인
+      audio.volume = Math.sin(t * Math.PI / 2);
       if (t < 1) requestAnimationFrame(step);
     }
-    
     requestAnimationFrame(step);
   }
 
   function fadeOutSmooth(audio, duration = 1000, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
-    
     function step(now) {
       const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = initialVolume * Math.cos(t * Math.PI / 2); // 부드러운 페이드 아웃
+      audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
       if (t < 1) requestAnimationFrame(step);
       else {
         audio.pause();
@@ -146,7 +128,6 @@ h1 span.emoji {
         if (callback) callback();
       }
     }
-    
     requestAnimationFrame(step);
   }
 
@@ -155,16 +136,22 @@ h1 span.emoji {
   // ------------------------------
   const lines = document.querySelectorAll(".line");
   let index = 0;
-  const bgm1 = document.getElementById("bgm1");
-  const bgm2 = document.getElementById("bgm2");
-  const startBtn = document.getElementById("startBtn");
+
+  const bgmMap = {
+    "bgm1-start": document.getElementById("bgm1"),
+    "bgm2-start": document.getElementById("bgm2"),
+    "bgm3-start": document.getElementById("bgm3"),
+    "bgm4-start": document.getElementById("bgm4"),
+    "bgm5-start": document.getElementById("bgm5")
+  };
+
+  let currentBgm = bgmMap["bgm1-start"];
 
   // ------------------------------
-  // BGM 시작 버튼
+  // 페이지 로드 시 BGM1 자동 재생
   // ------------------------------
-  startBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    fadeInSmooth(bgm1, 1500);
+  window.addEventListener('load', () => {
+    fadeInSmooth(currentBgm, 1500);
   });
 
   // ------------------------------
@@ -189,17 +176,18 @@ h1 span.emoji {
     currentLine.classList.remove("hide");
 
     // 음악 전환
-    if (currentLine.classList.contains("bgm2-start")) {
-      fadeOutSmooth(bgm1, 1000, () => fadeInSmooth(bgm2, 1500));
-    }
+    Object.keys(bgmMap).forEach(key => {
+      if (currentLine.classList.contains(key)) {
+        fadeOutSmooth(currentBgm, 1000, () => {
+          currentBgm = bgmMap[key];
+          fadeInSmooth(currentBgm, 1500);
+        });
+      }
+    });
 
     index++;
   });
 </script>
-
-
-
-
 
 </body>
 </html>
