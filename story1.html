@@ -6,22 +6,44 @@
 
   <style>
     body {
-      font-family: serif;
-      font-size: 15px;
-      line-height: 1.8;
-      padding: 40px;
-      cursor: pointer;
-    }
+  font-family: serif;
+  font-size: 20px;
+  line-height: 1.8;
+  padding: 40px;
+  cursor: pointer;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#story {
+  max-width: 600px;
+  text-align: center;
+}
 
     .line {
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 0.4s ease;
       margin-bottom: 20px;
     }
 
     .line.show {
       opacity: 1;
     }
+button {
+  margin: 20px 0 40px;
+  padding: 10px 24px;
+  font-size: 16px;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f2f2f2;
+}
+
   </style>
 </head>
 
@@ -30,7 +52,7 @@
 <h1>🔥 테스트 중 🔥</h1>
 
 <button id="startBtn">읽기 시작</button>
-<audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3" loop></audio>
+<audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
 <div id="story">
   <p class="line">비가 내리고 있었다.</p>
   <p class="line">역에는 우리 둘뿐이었다.</p>
