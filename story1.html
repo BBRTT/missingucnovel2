@@ -54,14 +54,14 @@ body {
    제목
 --------------------------- */
 h1 {
-  font-size: 40px;
+  font-size: 35px;
   text-align: center;
   margin-bottom: 20px;
   color: #333;
 
   background-color: #fff;   /* 배경색 */
   border: 2px solid #ccc;   /* 테두리 */
-  padding: 20px 40px;       /* 위아래/좌우 여백 */
+  padding: 10px 40px;       /* 위아래/좌우 여백 */
   border-radius: 0;          /* 모서리 각지게 */
   display: inline-block;     /* 칸 크기 글씨만큼 */
 }
@@ -150,7 +150,16 @@ h1 span.emoji {
     "bgm5-start": document.getElementById("bgm5")
   };
 
-  let currentBgm = bgmMap["bgm1-start"];
+let currentBgm = bgmMap["bgm1-start"];
+let bgmStarted = false;
+
+document.body.addEventListener("click", () => {
+  if (!bgmStarted) {
+    fadeInSmooth(bgm1, 1500);  // 첫 클릭 시 BGM 시작
+    bgmStarted = true;
+  }
+  // 글 페이드 처리...
+});
 
   // ------------------------------
   // 페이지 로드 시 BGM1 자동 재생
@@ -159,13 +168,6 @@ h1 span.emoji {
     fadeInSmooth(currentBgm, 1500);
   });
 
-  // ------------------------------
-  // 화면 클릭 이벤트
-  // ------------------------------
-  document.body.addEventListener("click", () => {
-    if (index >= lines.length) return;
-
-    const currentLine = lines[index];
 
     // 이전 글 페이드 아웃
     const toDisappear = document.querySelectorAll(".disappear");
