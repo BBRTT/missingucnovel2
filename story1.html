@@ -58,15 +58,15 @@ button:hover {
 <button id="startBtn">BGM</button>
 <audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
 <div id="story">
-  <p class="line">안녕하세요! 잘 지내셨나요?</p>
-  <p class="line">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
-  <p class="line">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
+  <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
+  <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
   <p class="line">*</p>
   <p class="line">*</p>
   <p class="line">*</p>
   <p class="line">*</p>
   <p class="line">*</p>
-  <p class="line"> 첫문장</p>
+  <p class="line bgm2-start"> 첫문장</p>
   
 </div>
 
@@ -85,19 +85,31 @@ button:hover {
 document.body.addEventListener("click", () => {
   if (index >= lines.length) return;
 
-  // 이전 문장 사라지기
-  if (index > 0) {
-    lines[index - 1].classList.remove("show");
-    lines[index - 1].classList.add("hide");
-  }
+  const currentLine = lines[index];
+
+  // 사라질 문장 처리
+  const toDisappear = document.querySelectorAll(".disappear");
+  toDisappear.forEach(line => {
+    if (line !== currentLine) { // 현재 문장은 나타나야 하므로 제외
+      line.classList.remove("show");
+      line.classList.add("hide");
+    }
+  });
 
   // 현재 문장 등장
-  const currentLine = lines[index];
   currentLine.classList.add("show");
   currentLine.classList.remove("hide");
 
+  // 음악 전환
+  if (currentLine.classList.contains("bgm2-start")) {
+    bgm1.pause();
+    bgm1.currentTime = 0;
+    bgm2.play();
+  }
+
   index++;
 });
+
 
 </script>
 
