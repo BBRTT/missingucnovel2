@@ -54,11 +54,16 @@ body {
    제목
 --------------------------- */
 h1 {
-  font-family: 'Courier New', Courier, monospace; /* 제목도 동일 폰트 */
-  font-size: 40px;                /* 크기 크게 */
-  text-align: center;             /* 가운데 정렬 */
-  margin-bottom: 20px;            /* 버튼과 간격 */
-  color: #333;                    /* 진한 글씨 */
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+
+  background-color: #fff;   /* 배경색 */
+  border: 2px solid #ccc;   /* 테두리 */
+  padding: 20px 40px;       /* 위아래/좌우 여백 */
+  border-radius: 0;          /* 모서리 각지게 */
+  display: inline-block;     /* 칸 크기 글씨만큼 */
 }
 
 /* --------------------------
@@ -77,7 +82,7 @@ h1 span.emoji {
 
 <h1>🔥 테스트 중 🔥</h1>
 
-<button id="startBtn">BGM</button>
+
 <audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
 <audio id="bgm2" src="Classic 2.m4a"></audio>
 <audio id="bgm3" src="bgm3.mp3"></audio>
