@@ -73,79 +73,103 @@ button:hover {
 </div>
 
 <script>
-// 볼륨 0 → 1, 페이드 인
-function fadeIn(audio, duration = 1000) {
-  audio.volume = 0;
-  audio.play();
-  const step = 50;
-  const increment = step / duration;
-  const interval = setInterval(() => {
-    if (audio.volume < 1) {
-      audio.volume = Math.min(audio.volume + increment, 1);
-    } else {
-      clearInterval(interval);
-    }
-  }, step);
-}
+  // ------------------------------
+  // 페이드 인 / 페이드 아웃 함수
+  // ------------------------------
 
-// 볼륨 1 → 0, 페이드 아웃 후 음악 정지
-function fadeOut(audio, duration = 1000, callback) {
-  const step = 50;
-  const decrement = step / duration;
-  const interval = setInterval(() => {
-    if (audio.volume > 0) {
-      audio.volume = Math.max(audio.volume - decrement, 0);
-    } else {
-      audio.pause();
-      audio.currentTime = 0;
-      clearInterval(interval);
-      if (callback) callback(); // fadeOut 끝나면 새 음악 시작
-    }
-  }, step);
-}
+  function fadeIn(audio, duration = 1000) {
+    audio.volume = 0;
+    audio.play();
+    const start = performance.now();
 
+    function step(timestamp) {
+      let progress = (timestamp - start) / duration;
+      if (progress < 1) {
+        audio.volume = Math.min(progress, 1);
+        requestAnimationFrame(step);
+      } else {
+        audio.volume = 1;
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  function fadeOut(audio, duration = 1000, callback) {
+    const start = performance.now();
+    const initialVolume = audio.volume;
+
+    function step(timestamp) {
+      let progress = (timestamp - start) / duration;
+      if (progress < 1) {
+        audio.volume = Math.max(initialVolume * (1 - progress), 0);
+        requestAnimationFrame(step);
+      } else {
+        audio.volume = 0;
+        audio.pause();
+        audio.currentTime = 0;
+        if (callback) callback();
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  // ------------------------------
+  // 변수 정의
+  // ------------------------------
 
   const lines = document.querySelectorAll(".line");
   let index = 0;
 
-  const bgm = document.getElementById("bgm1");
+  const bgm1 = document.getElementById("bgm1");
+  const bgm2 = document.getElementById("bgm2");
   const startBtn = document.getElementById("startBtn");
 
+  // ------------------------------
+  // BGM 시작 버튼
+  // ------------------------------
+
   startBtn.addEventListener("click", (e) => {
-    e.stopPropagation(); // 버튼 클릭이 글 클릭으로 안 번지게
-    bgm.play();
+    e.stopPropagation(); // 버튼 클릭이 글 클릭으로 번지지 않게
+    fadeIn(bgm1, 1500);  // 첫 음악 부드럽게 페이드 인
   });
 
-document.body.addEventListener("click", () => {
-  if (index >= lines.length) return;
+  // ------------------------------
+  // 화면 클릭 이벤트 (글 페이드)
+  // ------------------------------
 
-  const currentLine = lines[index];
+  document.body.addEventListener("click", () => {
+    if (index >= lines.length) return;
 
-  // 사라질 문장 처리
-  const toDisappear = document.querySelectorAll(".disappear");
-  toDisappear.forEach(line => {
-    if (line !== currentLine) { // 현재 문장은 나타나야 하므로 제외
-      line.classList.remove("show");
-      line.classList.add("hide");
+    const currentLine = lines[index];
+
+    // 이전에 사라져야 할 문장 처리
+    const toDisappear = document.querySelectorAll(".disappear");
+    toDisappear.forEach(line => {
+      if (line !== currentLine) {
+        line.classList.remove("show");
+        line.classList.add("hide");
+      }
+    });
+
+    // 현재 문장 등장
+    currentLine.classList.add("show");
+    currentLine.classList.remove("hide");
+
+    // ------------------------------
+    // 음악 전환
+    // ------------------------------
+    if (currentLine.classList.contains("bgm2-start")) {
+      fadeOut(bgm1, 1000, () => {
+        fadeIn(bgm2, 1500);
+      });
     }
+
+    index++; // 다음 문장으로 진행
   });
-
-  // 현재 문장 등장
-  currentLine.classList.add("show");
-  currentLine.classList.remove("hide");
-
-  // 음악 전환
-
-if (currentLine.classList.contains("bgm2-start")) {
-  // bgm1 페이드 아웃 후 bgm2 페이드 인
-  fadeOut(bgm1, 1000, () => {
-    fadeIn(bgm2, 1500);
-  });
-}
-index++;  
-});
-
 </script>
+
 
 
 </body>
