@@ -74,31 +74,33 @@ button:hover {
 
 <script>
   // ------------------------------
-  // Interval 기반 페이드 인/아웃
+  // easing 기반 페이드 인 / 페이드 아웃
   // ------------------------------
   function fadeIn(audio, duration = 1500) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
     audio.play();
-    const stepTime = 50;
+    const stepTime = 20; // 20ms마다 업데이트
     const steps = duration / stepTime;
     let step = 0;
     const interval = setInterval(() => {
       step++;
-      audio.volume = Math.min(step / steps, 1);
+      // ease-in 효과 적용 (초반 천천히, 후반 빠르게)
+      audio.volume = Math.min(Math.pow(step / steps, 2), 1);
       if (step >= steps) clearInterval(interval);
     }, stepTime);
   }
 
   function fadeOut(audio, duration = 1000, callback) {
-    const stepTime = 50;
+    const stepTime = 20;
     const steps = duration / stepTime;
     let step = 0;
     const initialVolume = audio.volume;
     const interval = setInterval(() => {
       step++;
-      audio.volume = Math.max(initialVolume * (1 - step / steps), 0);
+      // ease-out 효과 적용 (초반 빠르게, 후반 천천히)
+      audio.volume = Math.max(initialVolume * (1 - Math.pow(step / steps, 2)), 0);
       if (step >= steps) {
         audio.pause();
         audio.currentTime = 0;
@@ -154,6 +156,7 @@ button:hover {
     index++;
   });
 </script>
+
 
 
 
