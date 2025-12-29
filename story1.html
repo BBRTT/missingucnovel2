@@ -140,20 +140,20 @@ html, body {
 
 <audio id="bgm1" src="모야.mp3"></audio>
 <audio id="bgm2" src="살만찌고.mp3"></audio>
-<audio id="bgm3" src="초콜렛군 오렌지양.mp3"></audio>
+<audio id="bgm3" src="bgm3.mp3"></audio>
 <audio id="bgm4" src="bgm4.mp3"></audio>
 <audio id="bgm5" src="bgm5.mp3"></audio>
   
 <div id="story">
-  <p class="line disappear bgm3-start">안녕하세요! 잘 지내셨나요?</p>
-  <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
+  <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
-  <p class="line"> 첫문장</p>
+  <p class="line bgm1-start"> 첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
 
@@ -238,29 +238,6 @@ html, body {
 
     return; // ⭐ 중요: 여기서 종료
   }
-const lines = document.querySelectorAll(".line");
-let index = 0;
-
-function typeLine(line, callback) {
-  const fullText = line.textContent;
-  line.textContent = "";  // 기존 글 지우기
-  let i = 0;
-
-  const interval = setInterval(() => {
-    line.textContent += fullText[i];
-    i++;
-    if (i >= fullText.length) {
-      clearInterval(interval);
-      if (callback) callback();
-    }
-  }, 80); // 80ms마다 한 글자
-}
-
-document.body.addEventListener("click", () => {
-  if (index >= lines.length) return;
-  typeLine(lines[index]);
-  index++;
-});
 
   // ↓↓↓ 여기부터는 기존 클릭 로직 그대로 ↓↓↓
 });
@@ -280,7 +257,7 @@ document.body.addEventListener("click", () => {
     });
 
     // 현재 글 등장
-    
+    currentLine.classList.add("show");
     currentLine.classList.remove("hide");
 
     currentLine.scrollIntoView({
