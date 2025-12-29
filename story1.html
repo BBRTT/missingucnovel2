@@ -6,16 +6,71 @@
 <title>소설 테스트</title>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  body { font-family: 'SUIT', sans-serif; font-size: 15px; line-height: 1.1; letter-spacing: -0.015em; padding: 0 20px; cursor: pointer; background:#fafafa; display:flex; flex-direction:column; align-items:center; overflow-x:hidden;}
-  h1 { font-family:'Nanum Myeongjo', serif; font-size:32px; margin-bottom:20px; text-align:center; }
-  #story { max-width:600px; text-align:center; margin:0 auto; }
-  .line, .line img { opacity:0; margin-bottom:20px; transition:opacity 0.4s ease; max-width:100%; height:auto; font-weight:300; border:none; }
-  .line.show, .line img.show { opacity:1; }
-  .title-divider { width:100vw; height:1px; margin:40px 0 60px; background: rgba(0,0,0,0.15); box-shadow:0 6px 20px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.35); position:relative; left:50%; transform:translateX(-50%); }
-  #intro { position:fixed; inset:0; background:#fafafa; display:flex; justify-content:center; align-items:center; z-index:1000; transition:opacity 0.8s ease; }
-  .intro-inner { text-align:center; }
-  #intro.hide { opacity:0; pointer-events:none; }
-  #intro p { font-size:14px; color:#666; }
+body {
+  font-family: 'SUIT', sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fafafa;
+  cursor: pointer;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+#story {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.line {
+  opacity: 0;
+  margin-bottom: 20px;
+  transition: opacity 0.4s ease;
+}
+
+.line.show {
+  opacity: 1;
+}
+.line.hide {
+  opacity: 0;
+}
+
+.title-divider {
+  width: 100vw;
+  height: 1px;
+  margin: 40px 0 60px;
+  background: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.35);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#intro {
+  position: fixed;
+  inset: 0;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.8s ease;
+}
+.intro-inner { text-align: center; }
+#intro.hide { opacity: 0; pointer-events: none; }
 </style>
 </head>
 <body>
@@ -49,18 +104,27 @@
 </div>
 
 <script>
-// -----------------------------
+const lines = document.querySelectorAll(".line");
+let index = 0;
+let currentBgm = null;
+const bgmMap = {
+  "bgm1-start": document.getElementById("bgm1"),
+  "bgm2-start": document.getElementById("bgm2"),
+  "bgm3-start": document.getElementById("bgm3"),
+  "bgm4-start": document.getElementById("bgm4"),
+  "bgm5-start": document.getElementById("bgm5")
+};
+
 // 부드러운 BGM 페이드
-// -----------------------------
-function fadeInSmooth(audio,duration=1500){
+function fadeInSmooth(audio, duration=1600){
   audio.pause();
   audio.currentTime=0;
   audio.volume=0;
   audio.play();
-  const startTime=performance.now();
+  const startTime = performance.now();
   function step(now){
-    const t=Math.min((now-startTime)/duration,1);
-    audio.volume=Math.sin(t*Math.PI/2);
+    const t = Math.min((now-startTime)/duration,1);
+    audio.volume = Math.sin(t*Math.PI/2);
     if(t<1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
@@ -69,97 +133,73 @@ function fadeOutSmooth(audio,duration=1600,callback){
   const startTime=performance.now();
   const initialVolume=audio.volume;
   function step(now){
-    const t=Math.min((now-startTime)/duration,1);
-    audio.volume=initialVolume*Math.cos(t*Math.PI/2);
+    const t = Math.min((now-startTime)/duration,1);
+    audio.volume = initialVolume*Math.cos(t*Math.PI/2);
     if(t<1) requestAnimationFrame(step);
-    else{ audio.pause(); audio.currentTime=0; if(callback) callback(); }
+    else {
+      audio.pause();
+      audio.currentTime=0;
+      if(callback) callback();
+    }
   }
   requestAnimationFrame(step);
 }
 
-// -----------------------------
-// 타이핑 효과
-// -----------------------------
-function typeLine(line,callback){
-  if(line.tagName.toLowerCase()==='img'){
-    line.classList.add("show");
-    if(callback) callback();
-    return;
-  }
-  const fullText=line.textContent;
-  line.textContent="";
+// 글자 단위 타이핑
+function typeLine(line, callback){
+  if(!line.dataset.text){ if(callback) callback(); return; } // data-text 없으면 바로
+  const text = line.dataset.text;
+  line.textContent = "";
   let i=0;
-  const interval=setInterval(()=>{
-    line.textContent+=fullText[i];
+  const interval = setInterval(()=>{
+    line.textContent += text[i];
     i++;
-    if(i>=fullText.length){ clearInterval(interval); if(callback) callback(); }
-  },50);
+    if(i>=text.length){
+      clearInterval(interval);
+      if(callback) callback();
+    }
+  },40);
 }
 
-// -----------------------------
-// 변수
-// -----------------------------
-const lines=document.querySelectorAll(".line");
-let index=0;
-const bgmMap={
-  "bgm1-start":document.getElementById("bgm1"),
-  "bgm2-start":document.getElementById("bgm2"),
-  "bgm3-start":document.getElementById("bgm3"),
-  "bgm4-start":document.getElementById("bgm4"),
-  "bgm5-start":document.getElementById("bgm5")
-};
 let introDone=false;
-let currentBgm=null;
-
-// -----------------------------
-// 클릭 이벤트
-// -----------------------------
 document.body.addEventListener("click",()=>{
-  // 인트로 제거
+  // 인트로 종료
   if(!introDone){
     introDone=true;
     document.getElementById("intro").classList.add("hide");
-    // 첫 줄 표시
-    const firstLine=lines[0];
-    firstLine.classList.add("show");
-    typeLine(firstLine);
-    // 첫 BGM
-    Object.keys(bgmMap).forEach(key=>{
-      if(firstLine.classList.contains(key)){
-        currentBgm=bgmMap[key];
-        fadeInSmooth(currentBgm,1500);
-      }
-    });
-    firstLine.scrollIntoView({behavior:"smooth",block:"center"});
+    showLine(lines[index]);
     return;
   }
+  // 다음 글
+  if(index<lines.length) showLine(lines[index]);
+});
 
-  if(index>=lines.length) return;
-  const line=lines[index];
-  line.classList.add("show");
-  typeLine(line);
-  line.scrollIntoView({behavior:"smooth",block:"center"});
-
+function showLine(line){
   // 이전 글 숨기기
   lines.forEach(l=>{
-    if(l!==line){ l.classList.remove("show"); l.classList.add("hide"); }
+    if(l!==line) l.classList.remove("show");
+    l.classList.add("hide");
   });
 
-  // BGM 전환
+  // 현재 글 보이기
+  line.classList.remove("hide");
+  line.classList.add("show");
+  line.scrollIntoView({behavior:"smooth", block:"center"});
+
+  // BGM 처리
   Object.keys(bgmMap).forEach(key=>{
     if(line.classList.contains(key)){
       if(currentBgm!==bgmMap[key]){
-        if(currentBgm){
-          fadeOutSmooth(currentBgm,1600,()=>{ currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500); });
-        }else{
-          currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500);
-        }
+        if(currentBgm) fadeOutSmooth(currentBgm,1600,()=>{currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500);});
+        else{ currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500);}
       }
     }
   });
 
-  index++;
-});
+  // 타이핑 처리
+  typeLine(line, ()=>{ index++; });
+}
 </script>
+
 </body>
 </html>
