@@ -3,43 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>최종 소설</title>
+<title>최종 소설 테스트</title>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-/* 로딩 */
-#loading {
-  position: fixed;
-  inset: 0;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'SUIT', sans-serif;
-  font-size: 20px;
-  z-index: 2000;
-}
-#loading .dot { opacity: 0; animation: blink 1s infinite; }
-#loading .dot:nth-child(2) { animation-delay: 0.2s; }
-#loading .dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes blink { 0%,50%,100%{opacity:0;} 25%,75%{opacity:1;} }
-
-/* 전체 페이지 */
+/* ---------------- 전체 ---------------- */
 body {
+  margin: 0;
+  padding: 0;
   font-family: 'SUIT', sans-serif;
   font-size: 15px;
   line-height: 1.1;
   letter-spacing: -0.015em;
-  padding: 0 20px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fafafa;
   overflow-x: hidden;
+  background: #fafafa;
+  cursor: pointer;
 }
 
-/* 인트로 */
+/* ---------------- 인트로 ---------------- */
 #intro {
   position: fixed;
   inset: 0;
@@ -50,65 +30,29 @@ body {
   z-index: 1000;
   transition: opacity 0.8s ease;
 }
-.intro-inner { text-align: center; }
-#intro h1 { font-family: 'Nanum Myeongjo', serif; font-size: 32px; margin-bottom:16px; }
-#intro p { font-size: 14px; color: #666; }
-#intro.hide { opacity:0; pointer-events:none; }
+#intro.hide { opacity: 0; pointer-events: none; }
 
-/* 제목 & 구분선 */
-h1 {
-  font-family: 'Nanum Myeongjo', serif;
-  font-size: 30px;
-  text-align: center;
-  margin-bottom: 40px;
-  color: #333;
-}
+.intro-inner { text-align: center; }
+.intro-inner h1 { font-family: 'Nanum Myeongjo', serif; font-size: 32px; margin-bottom: 16px; }
+.intro-inner p { font-size: 14px; color: #666; }
 .title-divider {
   width: 100vw;
   height: 1px;
-  margin: 40px 0 60px;
+  margin: 20px 0 40px;
   background: rgba(0,0,0,0.15);
   box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.35);
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
-/* 소설 영역 */
-#story {
-  font-family: 'SUIT', sans-serif;
-  max-width: 600px;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0 20px;
-}
-
-/* 글 + 이미지 */
-.line,
-.line img {
-  font-size: 15px !important;
-  opacity: 0;
-  font-weight: 300;
-  margin-bottom: 20px;
-  max-width: 100%;
-  height: auto;
-  border: none;
-  transition: opacity 0.4s ease;
-}
-.line.show,
+/* ---------------- 스토리 ---------------- */
+#story { max-width: 600px; margin: 0 auto; padding: 0 20px; text-align: center; }
+.line { opacity: 0; font-weight: 300; margin-bottom: 20px; transition: opacity 0.4s ease; }
+.line.show { opacity: 1; }
+.line.hide { opacity: 0; }
+.line img { max-width: 80%; height: auto; border-radius: 8px; display: block; margin: 20px auto; opacity: 0; transition: opacity 0.4s ease; }
 .line img.show { opacity: 1; }
-.line.hide,
-.line img.hide { opacity: 0; }
-.line img { border-radius: 8px; }
 </style>
 </head>
-
 <body>
-
-<!-- 로딩 -->
-<div id="loading">
-  <span>로딩</span><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
-</div>
 
 <!-- 인트로 -->
 <div id="intro">
@@ -127,10 +71,10 @@ h1 {
 <audio id="bgm4" src="bgm4.mp3"></audio>
 <audio id="bgm5" src="bgm5.mp3"></audio>
 
-<!-- 본문 -->
+<!-- 스토리 -->
 <div id="story">
-  <p class="line disappear bgm1-start" data-text>안녕하세요! 잘 지내셨나요?</p>
-  <p class="line disappear" data-text>예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
+  <p class="line disappear bgm3-start" data-text>안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear" data-text>예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
   <p class="line disappear" data-text>그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
@@ -142,79 +86,99 @@ h1 {
 </div>
 
 <script>
-// 로딩 제거
-window.addEventListener('load', () => {
-  const loading = document.getElementById('loading');
-  setTimeout(() => {
-    loading.style.transition='opacity 0.5s ease';
-    loading.style.opacity='0';
-    setTimeout(()=>loading.style.display='none',500);
-  },500);
-});
+// ----------------- 설정 -----------------
+const TYPING_INTERVAL = 50;
+const BGM_FADE_IN = 1500;
+const BGM_FADE_OUT = 1600;
 
-// 페이드 BGM
-function fadeInSmooth(audio,duration=1500){audio.pause();audio.currentTime=0;audio.volume=0;audio.play();const startTime=performance.now();function step(now){const t=Math.min((now-startTime)/duration,1);audio.volume=Math.sin(t*Math.PI/2);if(t<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
-function fadeOutSmooth(audio,duration=1600,callback){const startTime=performance.now();const initialVolume=audio.volume;function step(now){const t=Math.min((now-startTime)/duration,1);audio.volume=initialVolume*Math.cos(t*Math.PI/2);if(t<1)requestAnimationFrame(step);else{audio.pause();audio.currentTime=0;if(callback)callback();}}requestAnimationFrame(step);}
+const lines = document.querySelectorAll(".line");
+let index = 0;
+let introDone = false;
+let currentBgm = null;
 
-// 글 + 타이핑
-const lines=document.querySelectorAll(".line[data-text]");
-let index=0;
-const bgmMap={"bgm1-start":document.getElementById("bgm1"),"bgm2-start":document.getElementById("bgm2"),"bgm3-start":document.getElementById("bgm3"),"bgm4-start":document.getElementById("bgm4"),"bgm5-start":document.getElementById("bgm5")};
-let introDone=false;
-let currentBgm=null;
+const bgmMap = {
+  "bgm1-start": document.getElementById("bgm1"),
+  "bgm2-start": document.getElementById("bgm2"),
+  "bgm3-start": document.getElementById("bgm3"),
+  "bgm4-start": document.getElementById("bgm4"),
+  "bgm5-start": document.getElementById("bgm5")
+};
 
-function typeLine(line,callback){
-  const fullText=line.textContent;
-  line.textContent="";
-  let i=0;
-  const interval=setInterval(()=>{
-    line.textContent+=fullText[i];
-    i++;
-    if(i>=fullText.length){clearInterval(interval);if(callback)callback();}
-  },50);
+// ----------------- 페이드 -----------------
+function fadeInSmooth(audio, duration) {
+  audio.pause(); audio.currentTime=0; audio.volume=0; audio.play();
+  const startTime = performance.now();
+  function step(now){
+    const t = Math.min((now-startTime)/duration,1);
+    audio.volume = Math.sin(t*Math.PI/2);
+    if(t<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
 }
 
-document.body.addEventListener("click",()=>{
-  if(!introDone){
-    introDone=true;
-    document.getElementById("intro").classList.add("hide");
-    const firstLine=lines[0];
-    firstLine.classList.add("show");
-    typeLine(firstLine);
+function fadeOutSmooth(audio,duration,callback){
+  const startTime = performance.now();
+  const initialVolume = audio.volume;
+  function step(now){
+    const t = Math.min((now-startTime)/duration,1);
+    audio.volume = initialVolume*Math.cos(t*Math.PI/2);
+    if(t<1) requestAnimationFrame(step);
+    else { audio.pause(); audio.currentTime=0; if(callback) callback(); }
+  }
+  requestAnimationFrame(step);
+}
 
-    Object.keys(bgmMap).forEach(key=>{
-      if(firstLine.classList.contains(key)){
-        currentBgm=bgmMap[key];
-        fadeInSmooth(currentBgm,1500);
-      }
-    });
-    firstLine.scrollIntoView({behavior:"smooth",block:"center"});
-    index++;
+// ----------------- 타이핑 -----------------
+function typeLine(line, callback){
+  const text = line.dataset.text;
+  if(!text) { line.classList.add("show"); if(callback) callback(); return; }
+  line.textContent = "";
+  let i=0;
+  const interval = setInterval(()=>{
+    line.textContent += text[i]; i++;
+    if(i>=text.length){ clearInterval(interval); if(callback) callback(); }
+  },TYPING_INTERVAL);
+}
+
+// ----------------- 클릭 이벤트 -----------------
+document.body.addEventListener("click", ()=>{
+  if(!introDone){
+    introDone = true;
+    document.getElementById("intro").classList.add("hide");
+    showLine(lines[0]);
     return;
   }
-
   if(index>=lines.length) return;
-  const currentLine=lines[index];
-  currentLine.classList.add("show");
-  typeLine(currentLine);
+  showLine(lines[index]);
+});
 
-  // 이전 글 페이드 아웃
-  lines.forEach((line,i)=>{if(i!==index){line.classList.remove("show");line.classList.add("hide");}});
-
-  // BGM 전환
+function showLine(line){
+  line.classList.remove("hide");
+  line.classList.add("show");
+  line.scrollIntoView({behavior:"smooth", block:"center"});
+  
+  // BGM
   Object.keys(bgmMap).forEach(key=>{
-    if(currentLine.classList.contains(key)){
+    if(line.classList.contains(key)){
       if(currentBgm!==bgmMap[key]){
-        if(currentBgm){fadeOutSmooth(currentBgm,1600,()=>{currentBgm=bgmMap[key];fadeInSmooth(currentBgm,1500);});}
-        else{currentBgm=bgmMap[key];fadeInSmooth(currentBgm,1500);}
+        if(currentBgm){
+          fadeOutSmooth(currentBgm,BGM_FADE_OUT,()=>{
+            currentBgm = bgmMap[key];
+            fadeInSmooth(currentBgm,BGM_FADE_IN);
+          });
+        } else {
+          currentBgm = bgmMap[key];
+          fadeInSmooth(currentBgm,BGM_FADE_IN);
+        }
       }
     }
   });
 
-  currentLine.scrollIntoView({behavior:"smooth",block:"center"});
-  index++;
-});
-</script>
+  // 타이핑
+  typeLine(line);
 
+  index++;
+}
+</script>
 </body>
 </html>
