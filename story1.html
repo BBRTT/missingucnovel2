@@ -120,10 +120,9 @@ h1 {
 /* --------------------------
    로딩 점 3개
 --------------------------- */
-.loading {
-  display: inline-block;
-  font-weight: 300;
-  color: #999;
+.loading::after {
+  content: "";
+  animation: dots 1s infinite steps(4, end);
 }
 
 @keyframes dots {
@@ -131,13 +130,8 @@ h1 {
   25% { content: "."; }
   50% { content: ".."; }
   75% { content: "..."; }
-  100% { content: ""; }
 }
 
-.loading::after {
-  content: "";
-  animation: dots 1s infinite steps(4, end);
-}
 
 html, body {
   overflow-x: hidden;
@@ -165,11 +159,10 @@ html, body {
   <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
-  <p class="line disappear">*</p>
-  <p class="line disappear">*</p>
-  <p class="line disappear">*</p>
-  <p class="line disappear">*</p>
-  <p class="line disappear">*</p>
+  <p class="line disappear">
+  <span class="loading"></span>
+</p>
+
   <p class="line bgm1-start">첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
@@ -236,31 +229,61 @@ html, body {
   // ------------------------------
   // 타이핑 + 로딩 함수
   // ------------------------------
-  function typeLineWithLoading(line, speed = 40, callback) {
-    const loading = document.createElement("span");
-    loading.className = "loading";
-    loading.textContent = "";
-    line.appendChild(loading);
-    line.classList.add("show");
+  const lines = document.querySelectorAll(".line");
+let index = 0;
+let playing = false;
+
+document.body.addEventListener("click", () => {
+  if (playing) return;
+  if (index >= lines.length) return;
+
+  playing = true;
+  playLine(lines[index], () => {
+    playing = false;
+    index++;
+  });
+});
+
+function playLine(line, done) {
+  const loading = line.querySelector(".loading");
+
+  const text = Array.from(line.childNodes)
+    .filter(n => n.nodeType === 3)
+    .map(n => n.textContent)
+    .join("")
+    .trim();
+
+  line.textContent = "";
+  line.classList.add("show");
+
+  if (loading) {
+    const l = document.createElement("span");
+    l.className = "loading";
+    line.appendChild(l);
 
     setTimeout(() => {
-      line.removeChild(loading);
-      const text = line.dataset.text;
-      let i = 0;
-
-      function typing() {
-        if (i < text.length) {
-          line.textContent += text[i];
-          i++;
-          setTimeout(typing, speed);
-        } else {
-          if (callback) callback();
-        }
-      }
-
-      typing();
-    }, 50);
+      line.textContent = "";
+      typeText(line, text, done);
+    }, 800);
+  } else {
+    typeText(line, text, done);
   }
+}
+
+function typeText(line, text, done) {
+  let i = 0;
+  const speed = 40;
+
+  function typing() {
+    if (i < text.length) {
+      line.textContent += text[i++];
+      setTimeout(typing, speed);
+    } else {
+      done();
+    }
+  }
+  typing();
+}
 
   // ------------------------------
   // 클릭 이벤트
