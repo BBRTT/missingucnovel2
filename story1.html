@@ -4,28 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>소설 테스트</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
+
 .title-divider {
   width: 100vw;
   height: 1px;
   margin: 40px 0 60px;
   background: rgba(0, 0, 0, 0.15);
+
   box-shadow:
-    0 6px 20px rgba(0, 0, 0, 0.45),
-    0 3px 6px rgba(0, 0, 0, 0.35);
+  0 6px 20px rgba(0, 0, 0, 0.45),
+  0 3px 6px rgba(0, 0, 0, 0.35);
   position: relative;
   left: 50%;
   transform: translateX(-50%);
 }
 
-/* --------------------------
-   전체 페이지
---------------------------- */
-body {
+    /* --------------------------
+       전체 페이지
+    --------------------------- */
+    body {
 
-  /* 인트로 전체 화면 */
+      /* 인트로 전체 화면 */
 #intro {
   position: fixed;
   inset: 0;
@@ -59,46 +61,48 @@ body {
   pointer-events: none;
 }
 
-  font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
-  font-size: 15px;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-  padding: 0 20px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: #fafafa;
-}
+      font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+      font-size: 15px;               /* 기본 본문 글씨 크기 */
+      line-height: 1.1;              /* 줄 간격 */
+      letter-spacing: -0.015em;
+      padding: 0 20px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #fafafa;
+    }
 
-/* --------------------------
-   제목
---------------------------- */
-h1 {
-  font-size: 30px;
-  text-align: center;
-  margin-bottom: 100px;
-  color: #333;
-  font-family: 'Nanum Myeongjo', serif;
-}
+    /* --------------------------
+       제목
+    --------------------------- */
+    h1 {
+      font-size: 30px;
+      text-align: center;
+      margin-bottom: 100px;
+      color: #333;
+      font-family: 'Nanum Myeongjo', serif;
+    
+    }
+    
 
-/* --------------------------
-   소설 영역
---------------------------- */
-#story {
-  font-family: 'SUIT', sans-serif;
-  max-width: 600px;
-  text-align: center;
-  margin: 0 auto;
-  padding: 0 20px;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
-}
+    /* --------------------------
+       소설 영역
+    --------------------------- */
+    #story {
+      font-family: 'SUIT', sans-serif;
+      max-width: 600px;
+      text-align: center;
+      margin: 0 auto;
+      padding: 0 20px;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+    }
 
-/* --------------------------
-   글 + 이미지 공통 스타일
---------------------------- */
-.line {
+    /* --------------------------
+       글 + 이미지 공통 스타일
+    --------------------------- */
+    .line {
   font-size: 15px !important;
   opacity: 0;
   font-weight: 300;
@@ -107,6 +111,10 @@ h1 {
   max-width: 100%;
   height: auto;
   border: none;
+}
+    
+img.line {
+  border-radius: 8px;
 }
 
 .line.show {
@@ -117,22 +125,20 @@ h1 {
   opacity: 0;
 }
 
-/* --------------------------
-   로딩 점 3개
---------------------------- */
-.loading::after {
-  content: "";
-  animation: dots 1s infinite steps(4, end);
+/* 로딩 점 */
+.loading-dots span {
+  display: inline-block;
+  animation: blink 1s infinite;
+  font-size: 24px;
+  margin: 0 2px;
 }
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
 
-@keyframes dots {
-  0% { content: ""; }
-  25% { content: "."; }
-  50% { content: ".."; }
-  75% { content: "..."; }
-}
-
-
+@keyframes blink {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}    
 html, body {
   overflow-x: hidden;
 }
@@ -142,8 +148,8 @@ html, body {
 <body>
 <div id="intro">
   <div class="intro-inner">
-    <h1>제발...</h1>
-    <div class="title-divider"></div>
+<h1> 제발... <h1>
+<div class="title-divider"></div>
     <p>화면을 터치하면 이야기가 시작됩니다</p>
     <p>※ 본 글에는 사운드가 포함되어 있습니다 ※</p>
   </div>
@@ -154,16 +160,16 @@ html, body {
 <audio id="bgm3" src="bgm3.mp3"></audio>
 <audio id="bgm4" src="bgm4.mp3"></audio>
 <audio id="bgm5" src="bgm5.mp3"></audio>
-
+  
 <div id="story">
   <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
-  <p class="line disappear">
-  <span class="loading"></span>
-</p>
+  <div class="loading-dots">
+    <span>.</span><span>.</span><span>.</span>
+  </div>
 
-  <p class="line bgm1-start">첫문장</p>
+  <p class="line bgm1-start"> 첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
 
@@ -200,6 +206,11 @@ html, body {
     }
     requestAnimationFrame(step);
   }
+const lines = document.querySelectorAll(".line, .loading-dots");
+let index = 0;
+let currentBgm = null;
+let introDone = false;
+
 
   // ------------------------------
   // 글 + BGM 변수
@@ -219,97 +230,45 @@ html, body {
   let currentBgm = null;
 
   // ------------------------------
-  // 각 글에 원래 텍스트 저장
-  // ------------------------------
-  lines.forEach(line => {
-    line.dataset.text = line.textContent;
-    line.textContent = "";
-  });
-
-  // ------------------------------
-  // 타이핑 + 로딩 함수
-  // ------------------------------
-  const lines = document.querySelectorAll(".line");
-let index = 0;
-let playing = false;
-
-document.body.addEventListener("click", () => {
-  if (playing) return;
-  if (index >= lines.length) return;
-
-  playing = true;
-  playLine(lines[index], () => {
-    playing = false;
-    index++;
-  });
-});
-
-function playLine(line, done) {
-  const loading = line.querySelector(".loading");
-
-  const text = Array.from(line.childNodes)
-    .filter(n => n.nodeType === 3)
-    .map(n => n.textContent)
-    .join("")
-    .trim();
-
-  line.textContent = "";
-  line.classList.add("show");
-
-  if (loading) {
-    const l = document.createElement("span");
-    l.className = "loading";
-    line.appendChild(l);
-
-    setTimeout(() => {
-      line.textContent = "";
-      typeText(line, text, done);
-    }, 800);
-  } else {
-    typeText(line, text, done);
-  }
-}
-
-function typeText(line, text, done) {
-  let i = 0;
-  const speed = 40;
-
-  function typing() {
-    if (i < text.length) {
-      line.textContent += text[i++];
-      setTimeout(typing, speed);
-    } else {
-      done();
-    }
-  }
-  typing();
-}
-
-  // ------------------------------
   // 클릭 이벤트
   // ------------------------------
   document.body.addEventListener("click", () => {
 
-    if (!introDone) {
-      introDone = true;
-      document.getElementById("intro").classList.add("hide");
+  // 아직 인트로면
+  if (!introDone) {
+    introDone = true;
 
-      const firstLine = lines[0];
-      typeLineWithLoading(firstLine);
+    // 인트로 사라짐
+    document.getElementById("intro").classList.add("hide");
 
-      if (firstLine.classList.contains("bgm1-start")) {
-        currentBgm = bgmMap["bgm1-start"];
-        fadeInSmooth(currentBgm, 1500);
-      }
+    // 첫 줄 보여주기
+    const firstLine = document.querySelector(".line");
+    firstLine.classList.add("show");
 
-      index = 1;
-      return;
+    // 자동 스크롤
+    firstLine.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    // 첫 BGM 시작 (있다면)
+    if (firstLine.classList.contains("bgm1-start")) {
+      currentBgm = bgmMap["bgm1-start"];
+      fadeInSmooth(currentBgm, 1500);
     }
 
+    return; // ⭐ 중요: 여기서 종료
+  }
+
+  // ↓↓↓ 여기부터는 기존 클릭 로직 그대로 ↓↓↓
+});
+
+  document.body.addEventListener("click", () => {
     if (index >= lines.length) return;
 
     const currentLine = lines[index];
 
+    // 이전 글 페이드 아웃
     const toDisappear = document.querySelectorAll(".disappear");
     toDisappear.forEach(line => {
       if (line !== currentLine) {
@@ -318,8 +277,16 @@ function typeText(line, text, done) {
       }
     });
 
-    typeLineWithLoading(currentLine);
+    // 현재 글 등장
+    currentLine.classList.add("show");
+    currentLine.classList.remove("hide");
 
+    currentLine.scrollIntoView({
+  behavior: "smooth",
+  block: "center"
+});
+
+    // 첫 등장 + BGM 시작
     Object.keys(bgmMap).forEach(key => {
       if (currentLine.classList.contains(key)) {
         if (currentBgm !== bgmMap[key]) {
@@ -339,6 +306,8 @@ function typeText(line, text, done) {
     index++;
   });
 </script>
+
+
 
 </body>
 </html>
