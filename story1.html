@@ -106,7 +106,62 @@ h1 {
 <script>
 const lines = document.querySelectorAll(".line");
 let index = 0;
-let currentBgm = null;
+
+// ------------------------------
+// 타이핑 함수 (data-text 있는 경우만)
+function typeLine(line, callback) {
+  const fullText = line.dataset.text;
+  if (!fullText) {
+    if (callback) callback();
+    return;
+  }
+
+  line.textContent = ""; // 기존 글 지우기
+  let i = 0;
+  const interval = setInterval(() => {
+    line.textContent += fullText[i];
+    i++;
+    if (i >= fullText.length) {
+      clearInterval(interval);
+      if (callback) callback();
+    }
+  }, 40); // 속도: 40ms
+}
+
+// ------------------------------
+// 페이드 인/아웃 BGM
+function fadeInSmooth(audio, duration = 1600) {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.volume = 0;
+  audio.play();
+  const startTime = performance.now();
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    audio.volume = Math.sin(t * Math.PI / 2);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function fadeOutSmooth(audio, duration = 1600, callback) {
+  const startTime = performance.now();
+  const initialVolume = audio.volume;
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
+    if (t < 1) requestAnimationFrame(step);
+    else {
+      audio.pause();
+      audio.currentTime = 0;
+      if (callback) callback();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// ------------------------------
+// BGM 매핑
 const bgmMap = {
   "bgm1-start": document.getElementById("bgm1"),
   "bgm2-start": document.getElementById("bgm2"),
@@ -114,91 +169,58 @@ const bgmMap = {
   "bgm4-start": document.getElementById("bgm4"),
   "bgm5-start": document.getElementById("bgm5")
 };
+let currentBgm = null;
 
-// 부드러운 BGM 페이드
-function fadeInSmooth(audio, duration=1600){
-  audio.pause();
-  audio.currentTime=0;
-  audio.volume=0;
-  audio.play();
-  const startTime = performance.now();
-  function step(now){
-    const t = Math.min((now-startTime)/duration,1);
-    audio.volume = Math.sin(t*Math.PI/2);
-    if(t<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-function fadeOutSmooth(audio,duration=1600,callback){
-  const startTime=performance.now();
-  const initialVolume=audio.volume;
-  function step(now){
-    const t = Math.min((now-startTime)/duration,1);
-    audio.volume = initialVolume*Math.cos(t*Math.PI/2);
-    if(t<1) requestAnimationFrame(step);
-    else {
-      audio.pause();
-      audio.currentTime=0;
-      if(callback) callback();
-    }
-  }
-  requestAnimationFrame(step);
-}
+// ------------------------------
+// 클릭 이벤트
+document.body.addEventListener("click", () => {
+  if (index >= lines.length) return;
 
-// 글자 단위 타이핑
-function typeLine(line, callback){
-  if(!line.dataset.text){ if(callback) callback(); return; } // data-text 없으면 바로
-  const text = line.dataset.text;
-  line.textContent = "";
-  let i=0;
-  const interval = setInterval(()=>{
-    line.textContent += text[i];
-    i++;
-    if(i>=text.length){
-      clearInterval(interval);
-      if(callback) callback();
-    }
-  },40);
-}
+  const currentLine = lines[index];
 
-let introDone=false;
-document.body.addEventListener("click",()=>{
-  // 인트로 종료
-  if(!introDone){
-    introDone=true;
-    document.getElementById("intro").classList.add("hide");
-    showLine(lines[index]);
-    return;
-  }
-  // 다음 글
-  if(index<lines.length) showLine(lines[index]);
-});
-
-function showLine(line){
   // 이전 글 숨기기
-  lines.forEach(l=>{
-    if(l!==line) l.classList.remove("show");
-    l.classList.add("hide");
+  const toDisappear = document.querySelectorAll(".disappear");
+  toDisappear.forEach(line => {
+    if (line !== currentLine) {
+      line.classList.remove("show");
+      line.classList.add("hide");
+    }
   });
 
-  // 현재 글 보이기
-  line.classList.remove("hide");
-  line.classList.add("show");
-  line.scrollIntoView({behavior:"smooth", block:"center"});
+  // 글 등장
+  currentLine.classList.remove("hide");
+  currentLine.classList.add("show");
 
-  // BGM 처리
-  Object.keys(bgmMap).forEach(key=>{
-    if(line.classList.contains(key)){
-      if(currentBgm!==bgmMap[key]){
-        if(currentBgm) fadeOutSmooth(currentBgm,1600,()=>{currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500);});
-        else{ currentBgm=bgmMap[key]; fadeInSmooth(currentBgm,1500);}
+  // 데이터 텍스트가 있으면 타이핑
+  typeLine(currentLine);
+
+  // 이미지면 바로 보여주기
+  if (currentLine.tagName === "IMG") {
+    currentLine.style.opacity = 1;
+  }
+
+  // BGM 체크
+  Object.keys(bgmMap).forEach(key => {
+    if (currentLine.classList.contains(key)) {
+      if (currentBgm !== bgmMap[key]) {
+        if (currentBgm) {
+          fadeOutSmooth(currentBgm, 1600, () => {
+            currentBgm = bgmMap[key];
+            fadeInSmooth(currentBgm, 1500);
+          });
+        } else {
+          currentBgm = bgmMap[key];
+          fadeInSmooth(currentBgm, 1500);
+        }
       }
     }
   });
 
-  // 타이핑 처리
-  typeLine(line, ()=>{ index++; });
-}
+  // 스크롤
+  currentLine.scrollIntoView({ behavior: "smooth", block: "center" });
+
+  index++;
+});
 </script>
 
 </body>
