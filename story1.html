@@ -79,6 +79,7 @@
       text-align: center;
       margin-bottom: 100px;
       color: #333;
+      font-family: 'Nanum Myeongjo', serif;
     
     }
     
@@ -93,6 +94,7 @@
       padding: 0 20px;
       line-height: 1.1;
       letter-spacing: -0.015em;
+      font-family: 'SUIT', sans-serif;
     }
 
     /* --------------------------
@@ -152,14 +154,14 @@ html, body {
   <p class="line disappear">*</p>
   <p class="line disappear">*</p>
   <p class="line bgm1-start"> 첫문장</p>
-  
+  <img class="line" src="이미지파일경로.jpg" alt="설명" />
 </div>
 
 <script>
   // ------------------------------
   // 부드러운 페이드
   // ------------------------------
-  function fadeInSmooth(audio, duration = 1500) {
+  function fadeInSmooth(audio, duration = 1600) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
@@ -173,7 +175,7 @@ html, body {
     requestAnimationFrame(step);
   }
 
-  function fadeOutSmooth(audio, duration = 1000, callback) {
+  function fadeOutSmooth(audio, duration = 1600, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
     function step(now) {
