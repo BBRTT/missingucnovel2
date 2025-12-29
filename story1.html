@@ -26,7 +26,39 @@
     --------------------------- */
     body {
 
-      
+      /* 인트로 전체 화면 */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: #fafafa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: opacity 0.8s ease;
+}
+
+/* 인트로 안 내용 */
+.intro-inner {
+  text-align: center;
+}
+
+#intro h1 {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+#intro p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* 사라질 때 */
+#intro.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
       font-family: 'Courier New', Courier, monospace; /* 사각진 글꼴 */
       font-size: 15px;               /* 기본 본문 글씨 크기 */
       line-height: 1.2;              /* 줄 간격 */
@@ -92,10 +124,13 @@ html, body {
 </head>
 
 <body>
-
-  
+<div id="intro">
+  <div class="intro-inner">
 <h1> 제발... <h1>
 <div class="title-divider"></div>
+    <p>화면을 터치하면 이야기가 시작됩니다</p>
+  </div>
+</div>
 
 <audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
 <audio id="bgm2" src="Classic 2.m4a"></audio>
@@ -164,11 +199,43 @@ html, body {
     "bgm5-start": document.getElementById("bgm5")
   };
 
+  let introDone = false;
   let currentBgm = null;
 
   // ------------------------------
   // 클릭 이벤트
   // ------------------------------
+  document.body.addEventListener("click", () => {
+
+  // 아직 인트로면
+  if (!introDone) {
+    introDone = true;
+
+    // 인트로 사라짐
+    document.getElementById("intro").classList.add("hide");
+
+    // 첫 줄 보여주기
+    const firstLine = document.querySelector(".line");
+    firstLine.classList.add("show");
+
+    // 자동 스크롤
+    firstLine.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    // 첫 BGM 시작 (있다면)
+    if (firstLine.classList.contains("bgm1-start")) {
+      currentBgm = bgmMap["bgm1-start"];
+      fadeInSmooth(currentBgm, 1500);
+    }
+
+    return; // ⭐ 중요: 여기서 종료
+  }
+
+  // ↓↓↓ 여기부터는 기존 클릭 로직 그대로 ↓↓↓
+});
+
   document.body.addEventListener("click", () => {
     if (index >= lines.length) return;
 
