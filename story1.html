@@ -30,7 +30,7 @@
       font-family: 'Courier New', Courier, monospace; /* 사각진 글꼴 */
       font-size: 15px;               /* 기본 본문 글씨 크기 */
       line-height: 1.2;              /* 줄 간격 */
-      padding: 40px;
+      padding: 30px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -57,7 +57,7 @@
       max-width: 600px;
       text-align: center;
       margin: 0 auto;
-      padding: 0 45px;
+      padding: 0 30px;
     }
 
     /* --------------------------
@@ -104,20 +104,15 @@ html, body {
 <audio id="bgm5" src="bgm5.mp3"></audio>
   
 <div id="story">
-  <p class="line disappear bgm1-start">
-    
-    
-    
-    
-    안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
-  <p class="line">*</p>
-  <p class="line">*</p>
-  <p class="line">*</p>
-  <p class="line">*</p>
-  <p class="line">*</p>
-  <p class="line bgm2-start"> 첫문장</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line bgm1-start"> 첫문장</p>
   
 </div>
 
@@ -191,6 +186,11 @@ html, body {
     // 현재 글 등장
     currentLine.classList.add("show");
     currentLine.classList.remove("hide");
+
+    currentLine.scrollIntoView({
+  behavior: "smooth",
+  block: "center"
+});
 
     // 첫 등장 + BGM 시작
     Object.keys(bgmMap).forEach(key => {
