@@ -156,28 +156,79 @@ img.line {
 
 <script>
 // ------------------------------
-// 부드러운 BGM 페이드
+// 페이드용 함수
 // ------------------------------
-function fadeInSmooth(audio, duration = 1600) {
-  audio.pause();
-  audio.currentTime = 0;
-  audio.volume = 0;
-  audio.play();
-  const startTime = performance.now();
+function fadeIn(el, duration = 400) {
+  el.style.opacity = 0;
+  el.style.display = el.tagName === "IMG" ? "block" : "inline-block";
+  const start = performance.now();
   function step(now) {
-    const t = Math.min((now - startTime)/duration, 1);
-    audio.volume = Math.sin(t * Math.PI / 2);
+    const t = Math.min((now - start) / duration, 1);
+    el.style.opacity = t;
     if (t < 1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
-function fadeOutSmooth(audio, duration = 1600, callback) {
-  const startTime = performance.now();
-  const initialVolume = audio.volume;
+function fadeOut(el, duration = 400, callback) {
+  const start = performance.now();
+  const initial = parseFloat(getComputedStyle(el).opacity);
   function step(now) {
-    const t = Math.min((now - startTime)/duration, 1);
-    audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
+    const t = Math.min((now - start) / duration, 1);
+    el.style.opacity = initial * (1 - t);
+    if (t < 1) requestAnimationFrame(step);
+    else {
+      if (el.tagName !== "IMG") el.style.display = "inline-block";
+      if (callback) callback();
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// ------------------------------
+// 타이핑 함수
+// ------------------------------
+function typeLine(line, callback) {
+  if (!line.dataset.text) {
+    fadeIn(line);
+    if (callback) callback();
+    return;
+  }
+  const fullText = line.textContent;
+  line.textContent = "";
+  let i = 0;
+  const interval = setInterval(() => {
+    line.textContent += fullText[i];
+    i++;
+    if (i >= fullText.length) {
+      clearInterval(interval);
+      if (callback) callback();
+    }
+  }, 50); // 50ms
+}
+
+// ------------------------------
+// BGM 페이드
+// ------------------------------
+function fadeInAudio(audio, duration = 1600) {
+  audio.volume = 0;
+  audio.currentTime = 0;
+  audio.play();
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    audio.volume = Math.sin((t * Math.PI) / 2);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function fadeOutAudio(audio, duration = 1600, callback) {
+  const startVol = audio.volume;
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min((now - start) / duration, 1);
+    audio.volume = startVol * Math.cos((t * Math.PI) / 2);
     if (t < 1) requestAnimationFrame(step);
     else {
       audio.pause();
@@ -189,7 +240,7 @@ function fadeOutSmooth(audio, duration = 1600, callback) {
 }
 
 // ------------------------------
-// 변수
+// 글 + BGM
 // ------------------------------
 const lines = document.querySelectorAll(".line");
 let index = 0;
@@ -206,84 +257,47 @@ let currentBgm = null;
 let introDone = false;
 
 // ------------------------------
-// 타이핑 기능
-// ------------------------------
-function typeLine(line, speed = 40, callback) {
-  const text = line.dataset.text || "";
-  line.textContent = "";
-  let i = 0;
-  const interval = setInterval(() => {
-    line.textContent += text[i];
-    i++;
-    if (i >= text.length) {
-      clearInterval(interval);
-      if (callback) callback();
-    }
-  }, speed);
-}
-
-// ------------------------------
 // 클릭 이벤트
 // ------------------------------
 document.body.addEventListener("click", () => {
-  if (!introDone) {
+
+  // 인트로 제거
+  const intro = document.getElementById("intro");
+  if (!introDone && intro) {
+    intro.classList.add("hide");
     introDone = true;
-    document.getElementById("intro").classList.add("hide");
-
-    // 첫 글 등장
-    const firstLine = lines[0];
-    firstLine.classList.add("show");
-    typeLine(firstLine);
-
-    // 첫 BGM
-    if (firstLine.classList.contains("bgm1-start")) {
-      currentBgm = bgmMap["bgm1-start"];
-      fadeInSmooth(currentBgm);
-    }
-
-    firstLine.scrollIntoView({behavior: "smooth", block: "center"});
-    return;
   }
 
   if (index >= lines.length) return;
+
   const line = lines[index];
 
   // 이전 글 페이드 아웃
-  const toDisappear = document.querySelectorAll(".disappear");
-  toDisappear.forEach(l => {
-    if (l !== line) {
-      l.classList.remove("show");
-      l.classList.add("hide");
-    }
+  lines.forEach((l, idx) => {
+    if (idx !== index) fadeOut(l, 200);
   });
 
-  // 현재 글 등장
-  line.classList.add("show");
-  if (line.dataset.text) {
-    typeLine(line, 40);
-  }
-
-  // 이미지는 바로 보이게
-  if (line.tagName === "IMG") {
-    line.classList.add("show");
-  }
-
-  // BGM 전환
+  // BGM 처리
   Object.keys(bgmMap).forEach(key => {
-    if (line.classList.contains(key) && currentBgm !== bgmMap[key]) {
-      if (currentBgm) {
-        fadeOutSmooth(currentBgm, 1600, () => {
+    if (line.classList.contains(key)) {
+      if (currentBgm && currentBgm !== bgmMap[key]) {
+        fadeOutAudio(currentBgm, 1600, () => {
           currentBgm = bgmMap[key];
-          fadeInSmooth(currentBgm, 1600);
+          fadeInAudio(currentBgm, 1600);
         });
-      } else {
+      } else if (!currentBgm) {
         currentBgm = bgmMap[key];
-        fadeInSmooth(currentBgm, 1600);
+        fadeInAudio(currentBgm, 1600);
       }
     }
   });
 
-  line.scrollIntoView({behavior: "smooth", block: "center"});
+  // 글 타이핑/페이드
+  typeLine(line);
+
+  // 자동 스크롤
+  line.scrollIntoView({behavior:"smooth", block:"center"});
+
   index++;
 });
 </script>
