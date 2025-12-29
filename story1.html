@@ -128,20 +128,23 @@ img.line {
   content: "";
   display: inline-block;
   animation: dots 1.2s infinite steps(4, end);
+  color: #999;                 /* 회색 */
+  font-family: 'SUIT', 'Apple SD Gothic Neo', system-ui, sans-serif;
+  font-weight: 700;
 }
 
 /* 작은 로딩 */
 .loading.small {
-  font-size: 23px;
-  letter-spacing: 6px;
+  font-size: 30px;
+  letter-spacing: 10px;
 }
 
 /* 큰 로딩 */
 .loading.big {
-  font-size: 36px;
+  font-size: clamp(40px, 6vw, 42px);
   letter-spacing: 10px;
-  font-weight: 300;
 }
+
 
 
 @keyframes dots {
