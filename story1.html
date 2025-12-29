@@ -207,25 +207,7 @@ let index = 0;
 let currentBgm = null;
 let introDone = false;
 
-function typeLine(line, callback, speed=50){
-  if(line.tagName === "IMG" || line.classList.contains("loading-dots")) {
-    line.classList.add("show");
-    if(callback) callback();
-    return;
-  }
-  const fullText = line.dataset.text;
-  line.textContent = "";
-  line.classList.add("show");
-  let i=0;
-  const interval = setInterval(()=>{
-    line.textContent += fullText[i];
-    i++;
-    if(i>=fullText.length){
-      clearInterval(interval);
-      if(callback) callback();
-    }
-  }, speed);
-}
+
   // ------------------------------
   // 글 + BGM 변수
   // ------------------------------
