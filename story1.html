@@ -3,18 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>소설 테스트</title>
+<title>소설 최종 테스트</title>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* --------------------------
-   전체 페이지
---------------------------- */
 body {
   font-family: 'SUIT', sans-serif;
   font-size: 15px;
   line-height: 1.2;
   letter-spacing: -0.015em;
   padding: 0 20px;
+  margin:0;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -23,9 +21,6 @@ body {
   overflow-x: hidden;
 }
 
-/* --------------------------
-   제목
---------------------------- */
 h1 {
   font-family: 'Nanum Myeongjo', serif;
   font-size: 32px;
@@ -33,31 +28,20 @@ h1 {
   margin-bottom: 40px;
 }
 
-/* --------------------------
-   본문 영역
---------------------------- */
 #story {
   max-width: 600px;
   text-align: center;
   margin: 0 auto;
 }
 
-/* --------------------------
-   글 + 이미지 공통 스타일
---------------------------- */
 .line {
   opacity: 0;
   margin-bottom: 20px;
   transition: opacity 0.4s ease;
 }
 
-.line.show {
-  opacity: 1;
-}
-
-.line.hide {
-  opacity: 0;
-}
+.line.show { opacity: 1; }
+.line.hide { opacity: 0; }
 
 .line img {
   max-width: 90%;
@@ -66,21 +50,17 @@ h1 {
   display: block;
 }
 
-/* --------------------------
-   로딩
---------------------------- */
+/* 로딩 깜빡임 */
 .loading {
   font-size: 16px;
   color: #666;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
 .loading.show {
   opacity: 1;
   animation: blink 1s infinite;
 }
-
 @keyframes blink {
   0%,50%,100% {opacity:0;}
   25%,75% {opacity:1;}
@@ -89,18 +69,26 @@ h1 {
 </head>
 <body>
 
-<h1>🔥 테스트 소설 🔥</h1>
+<h1>🔥 테스트 중 🔥</h1>
 
-<audio id="bgm1" src="모야.mp3"></audio>
-<audio id="bgm2" src="살만찌고.mp3"></audio>
-<audio id="bgm3" src="초콜렛군 오렌지양.mp3"></audio>
+<!-- BGM -->
+<audio id="bgm1" src="ScreenRecording_12-28-2025-05-32-44_1.mp3"></audio>
+<audio id="bgm2" src="Classic 2.m4a"></audio>
+<audio id="bgm3" src="bgm3.mp3"></audio>
+<audio id="bgm4" src="bgm4.mp3"></audio>
+<audio id="bgm5" src="bgm5.mp3"></audio>
 
+<!-- 본문 -->
 <div id="story">
-  <p class="line disappear bgm3-start" data-text>안녕하세요! 잘 지내셨나요?</p>
-  <p class="line disappear" data-text>예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
-  <p class="line disappear" data-text>그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
-  <div class="loading" id="loading">로딩중...</div>
-  <p class="line" data-text>첫문장 시작!</p>
+  <p class="line disappear bgm1-start" data-text="안녕하세요! 잘 지내셨나요?"></p>
+  <p class="line disappear" data-text="예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^."></p>
+  <p class="line disappear" data-text="그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!"></p>
+  <p class="line loading-insert" data-text="*"></p>
+  <p class="line disappear" data-text="*"></p>
+  <p class="line disappear" data-text="*"></p>
+  <p class="line disappear" data-text="*"></p>
+  <p class="line disappear" data-text="*"></p>
+  <p class="line" data-text="첫문장"></p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
 
@@ -108,53 +96,50 @@ h1 {
 // ------------------------------
 // BGM 페이드
 // ------------------------------
-function fadeInSmooth(audio, duration = 1500) {
+function fadeInSmooth(audio, duration = 1500){
   audio.pause();
-  audio.currentTime = 0;
-  audio.volume = 0;
+  audio.currentTime=0;
+  audio.volume=0;
   audio.play();
-  const startTime = performance.now();
-  function step(now) {
-    const t = Math.min((now - startTime)/duration,1);
-    audio.volume = Math.sin(t*Math.PI/2);
+  const startTime=performance.now();
+  function step(now){
+    const t=Math.min((now-startTime)/duration,1);
+    audio.volume=Math.sin(t*Math.PI/2);
     if(t<1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
 
-function fadeOutSmooth(audio, duration = 1600, callback) {
+function fadeOutSmooth(audio, duration = 1600, callback){
   const startTime = performance.now();
   const initialVolume = audio.volume;
   function step(now){
-    const t = Math.min((now - startTime)/duration,1);
-    audio.volume = initialVolume*Math.cos(t*Math.PI/2);
+    const t=Math.min((now-startTime)/duration,1);
+    audio.volume=initialVolume*Math.cos(t*Math.PI/2);
     if(t<1) requestAnimationFrame(step);
-    else {
-      audio.pause();
-      audio.currentTime=0;
-      if(callback) callback();
-    }
+    else { audio.pause(); audio.currentTime=0; if(callback) callback(); }
   }
   requestAnimationFrame(step);
 }
 
 // ------------------------------
-// 글 + 이미지 + 로딩
+// 글 타이핑 + 로딩
 // ------------------------------
 const lines = document.querySelectorAll(".line");
-const loading = document.getElementById("loading");
+const loading = document.querySelector(".loading");
 const bgmMap = {
   "bgm1-start": document.getElementById("bgm1"),
   "bgm2-start": document.getElementById("bgm2"),
-  "bgm3-start": document.getElementById("bgm3")
+  "bgm3-start": document.getElementById("bgm3"),
+  "bgm4-start": document.getElementById("bgm4"),
+  "bgm5-start": document.getElementById("bgm5")
 };
 let currentBgm = null;
 let index=0;
 
 function showLine(line, callback){
-  // 글이면 타이핑
   if(line.dataset.text){
-    const fullText = line.dataset.text || line.textContent;
+    const fullText = line.dataset.text;
     line.textContent="";
     line.classList.add("show");
     let i=0;
@@ -165,9 +150,8 @@ function showLine(line, callback){
         clearInterval(interval);
         if(callback) callback();
       }
-    },50); // 50ms
+    },50);
   } else {
-    // 이미지이면 바로 표시
     line.classList.add("show");
     if(callback) callback();
   }
@@ -177,7 +161,7 @@ document.body.addEventListener("click", ()=>{
   if(index>=lines.length) return;
   const currentLine = lines[index];
 
-  // 이전 글 사라지기
+  // 이전 글 사라짐
   lines.forEach(line=>{
     if(line!==currentLine) line.classList.remove("show"), line.classList.add("hide");
   });
@@ -201,8 +185,15 @@ document.body.addEventListener("click", ()=>{
 
   // 로딩 표시 가능
   if(currentLine.classList.contains("loading-insert")){
-    loading.classList.add("show");
-    setTimeout(()=>{loading.classList.remove("show"); showLine(currentLine,()=>{});},1000);
+    currentLine.classList.add("show"); // 빈 공간 표시
+    const loader = document.createElement("div");
+    loader.classList.add("loading","show");
+    loader.textContent="로딩중...";
+    currentLine.appendChild(loader);
+    setTimeout(()=>{
+      loader.remove();
+      showLine(currentLine);
+    },1000);
   } else {
     showLine(currentLine);
   }
@@ -211,6 +202,5 @@ document.body.addEventListener("click", ()=>{
   index++;
 });
 </script>
-
 </body>
 </html>
