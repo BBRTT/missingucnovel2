@@ -3,31 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>최종 소설 테스트</title>
+<title>소설 테스트</title>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&family=Suit:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-/* --------------------------
-   기본 스타일
---------------------------- */
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'SUIT', sans-serif;
-  background: #fafafa;
-  overflow-x: hidden; /* 좌우 스크롤 방지 */
-}
 
+<style>
+/* -------------------------- 전체 페이지 --------------------------- */
 body {
+  font-family: 'SUIT', sans-serif;
+  font-size: 15px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  padding: 0 20px;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
-  cursor: pointer;
-  padding: 0 20px;
+  background-color: #fafafa;
+  overflow-x: hidden;
 }
 
-/* --------------------------
-   인트로 화면
---------------------------- */
+/* -------------------------- 인트로 --------------------------- */
 #intro {
   position: fixed;
   inset: 0;
@@ -38,89 +33,82 @@ body {
   z-index: 1000;
   transition: opacity 0.8s ease;
 }
-
+.intro-inner {
+  text-align: center;
+}
+#intro h1 {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+#intro p {
+  font-size: 14px;
+  color: #666;
+}
 #intro.hide {
   opacity: 0;
   pointer-events: none;
 }
 
-.intro-inner {
-  text-align: center;
-}
-
-.intro-inner h1 {
-  font-family: 'Nanum Myeongjo', serif;
-  font-size: 32px;
-  margin-bottom: 16px;
-}
-
-.intro-inner p {
-  font-size: 14px;
-  color: #666;
-}
-
-/* --------------------------
-   제목
---------------------------- */
+/* -------------------------- 제목 --------------------------- */
 h1.title {
   font-family: 'Nanum Myeongjo', serif;
   font-size: 30px;
-  margin-bottom: 60px;
+  margin-bottom: 40px;
   color: #333;
 }
 
-/* --------------------------
-   제목 구분선
---------------------------- */
+/* -------------------------- 제목 구분선 --------------------------- */
 .title-divider {
   width: 100vw;
   height: 1px;
+  margin: 20px 0 40px;
   background: rgba(0,0,0,0.15);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.45),
-              0 3px 6px rgba(0,0,0,0.35);
-  margin: 40px 0 60px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.45), 0 3px 6px rgba(0,0,0,0.35);
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-/* --------------------------
-   본문
---------------------------- */
+/* -------------------------- 소설 영역 --------------------------- */
 #story {
-  max-width: 600px;   /* 글 가독성 */
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
   margin: 0 auto;
   padding: 0 20px;
-  text-align: center;
-  line-height: 1.3;
-  letter-spacing: -0.015em;
 }
 
-/* --------------------------
-   글 + 이미지
---------------------------- */
-.line, .line img {
-  opacity: 0;
+/* -------------------------- 글 + 이미지 --------------------------- */
+.line {
+  font-size: 15px;
   font-weight: 300;
-  font-size: 15px !important;
+  opacity: 0;
   margin-bottom: 20px;
   max-width: 100%;
   height: auto;
   border: none;
-  transition: opacity 0.4s ease;
 }
-
-.line.show, .line img.show {
+.line.show {
   opacity: 1;
 }
-
-.line.hide, .line img.hide {
+.line.hide {
   opacity: 0;
 }
-
-img.line {
+.line img {
+  max-width: 100%;
+  height: auto;
   border-radius: 8px;
+  display: block;
+  margin: 20px auto;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.line img.show {
+  opacity: 1;
 }
 </style>
 </head>
-
 <body>
 
 <!-- 인트로 -->
@@ -140,47 +128,43 @@ img.line {
 <audio id="bgm4" src="bgm4.mp3"></audio>
 <audio id="bgm5" src="bgm5.mp3"></audio>
 
-<!-- 본문 -->
+<!-- 소설 본문 -->
 <div id="story">
-  <p class="line disappear bgm3-start" data-text="안녕하세요! 잘 지내셨나요?"></p>
-  <p class="line disappear" data-text="예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^."></p>
-  <p class="line disappear" data-text="그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!"></p>
-  <p class="line disappear" data-text="*"></p>
-  <p class="line disappear" data-text="*"></p>
-  <p class="line disappear" data-text="*"></p>
-  <p class="line disappear" data-text="*"></p>
-  <p class="line disappear" data-text="*"></p>
-  <p class="line" data-text="첫문장"></p>
+  <p class="line disappear bgm3-start" data-text>안녕하세요! 잘 지내셨나요?</p>
+  <p class="line disappear" data-text>예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
+  <p class="line disappear" data-text>그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line disappear">*</p>
+  <p class="line" data-text>첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
 
 <script>
 // ------------------------------
-// 페이드용 함수
+// 페이드 함수
 // ------------------------------
-function fadeIn(el, duration = 400) {
+function fadeIn(el, duration=400) {
   el.style.opacity = 0;
   el.style.display = el.tagName === "IMG" ? "block" : "inline-block";
   const start = performance.now();
   function step(now) {
-    const t = Math.min((now - start) / duration, 1);
+    const t = Math.min((now-start)/duration,1);
     el.style.opacity = t;
-    if (t < 1) requestAnimationFrame(step);
+    if(t<1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
-
-function fadeOut(el, duration = 400, callback) {
+function fadeOut(el, duration=400, callback){
   const start = performance.now();
   const initial = parseFloat(getComputedStyle(el).opacity);
-  function step(now) {
-    const t = Math.min((now - start) / duration, 1);
-    el.style.opacity = initial * (1 - t);
-    if (t < 1) requestAnimationFrame(step);
-    else {
-      if (el.tagName !== "IMG") el.style.display = "inline-block";
-      if (callback) callback();
-    }
+  function step(now){
+    const t = Math.min((now-start)/duration,1);
+    el.style.opacity = initial*(1-t);
+    if(t<1) requestAnimationFrame(step);
+    else if(callback) callback();
   }
   requestAnimationFrame(step);
 }
@@ -188,53 +172,48 @@ function fadeOut(el, duration = 400, callback) {
 // ------------------------------
 // 타이핑 함수
 // ------------------------------
-function typeLine(line, callback) {
-  if (!line.dataset.text) {
+function typeLine(line, callback){
+  if(!line.dataset.text){
     fadeIn(line);
-    if (callback) callback();
+    if(callback) callback();
     return;
   }
   const fullText = line.textContent;
   line.textContent = "";
-  let i = 0;
-  const interval = setInterval(() => {
+  let i=0;
+  const interval = setInterval(()=>{
     line.textContent += fullText[i];
     i++;
-    if (i >= fullText.length) {
+    if(i>=fullText.length){
       clearInterval(interval);
-      if (callback) callback();
+      if(callback) callback();
     }
-  }, 50); // 50ms
+  },50);
 }
 
 // ------------------------------
 // BGM 페이드
 // ------------------------------
-function fadeInAudio(audio, duration = 1600) {
-  audio.volume = 0;
-  audio.currentTime = 0;
+function fadeInAudio(audio,duration=1600){
+  audio.volume=0;
+  audio.currentTime=0;
   audio.play();
   const start = performance.now();
-  function step(now) {
-    const t = Math.min((now - start) / duration, 1);
-    audio.volume = Math.sin((t * Math.PI) / 2);
-    if (t < 1) requestAnimationFrame(step);
+  function step(now){
+    const t = Math.min((now-start)/duration,1);
+    audio.volume = Math.sin((t*Math.PI)/2);
+    if(t<1) requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 }
-
-function fadeOutAudio(audio, duration = 1600, callback) {
+function fadeOutAudio(audio,duration=1600,callback){
   const startVol = audio.volume;
   const start = performance.now();
-  function step(now) {
-    const t = Math.min((now - start) / duration, 1);
-    audio.volume = startVol * Math.cos((t * Math.PI) / 2);
-    if (t < 1) requestAnimationFrame(step);
-    else {
-      audio.pause();
-      audio.currentTime = 0;
-      if (callback) callback();
-    }
+  function step(now){
+    const t = Math.min((now-start)/duration,1);
+    audio.volume = startVol*Math.cos((t*Math.PI)/2);
+    if(t<1) requestAnimationFrame(step);
+    else {audio.pause(); audio.currentTime=0; if(callback) callback();}
   }
   requestAnimationFrame(step);
 }
@@ -243,61 +222,49 @@ function fadeOutAudio(audio, duration = 1600, callback) {
 // 글 + BGM
 // ------------------------------
 const lines = document.querySelectorAll(".line");
-let index = 0;
-
-const bgmMap = {
+let index=0;
+const bgmMap={
   "bgm1-start": document.getElementById("bgm1"),
   "bgm2-start": document.getElementById("bgm2"),
   "bgm3-start": document.getElementById("bgm3"),
   "bgm4-start": document.getElementById("bgm4"),
   "bgm5-start": document.getElementById("bgm5")
 };
-
-let currentBgm = null;
-let introDone = false;
+let currentBgm=null;
+let introDone=false;
 
 // ------------------------------
 // 클릭 이벤트
 // ------------------------------
-document.body.addEventListener("click", () => {
-
+document.body.addEventListener("click",()=>{
   // 인트로 제거
-  const intro = document.getElementById("intro");
-  if (!introDone && intro) {
+  const intro=document.getElementById("intro");
+  if(!introDone && intro){
     intro.classList.add("hide");
-    introDone = true;
+    introDone=true;
   }
-
-  if (index >= lines.length) return;
-
-  const line = lines[index];
-
+  if(index>=lines.length) return;
+  const line=lines[index];
   // 이전 글 페이드 아웃
-  lines.forEach((l, idx) => {
-    if (idx !== index) fadeOut(l, 200);
-  });
-
+  lines.forEach((l,idx)=>{if(idx!==index) fadeOut(l,200)});
   // BGM 처리
-  Object.keys(bgmMap).forEach(key => {
-    if (line.classList.contains(key)) {
-      if (currentBgm && currentBgm !== bgmMap[key]) {
-        fadeOutAudio(currentBgm, 1600, () => {
-          currentBgm = bgmMap[key];
-          fadeInAudio(currentBgm, 1600);
+  Object.keys(bgmMap).forEach(key=>{
+    if(line.classList.contains(key)){
+      if(currentBgm && currentBgm!==bgmMap[key]){
+        fadeOutAudio(currentBgm,1600,()=>{
+          currentBgm=bgmMap[key];
+          fadeInAudio(currentBgm,1600);
         });
-      } else if (!currentBgm) {
-        currentBgm = bgmMap[key];
-        fadeInAudio(currentBgm, 1600);
+      } else if(!currentBgm){
+        currentBgm=bgmMap[key];
+        fadeInAudio(currentBgm,1600);
       }
     }
   });
-
   // 글 타이핑/페이드
   typeLine(line);
-
   // 자동 스크롤
   line.scrollIntoView({behavior:"smooth", block:"center"});
-
   index++;
 });
 </script>
