@@ -125,26 +125,33 @@
 img.line {
   border-radius: 8px;
 }
+/* 기본 로딩 (big 포함) */
 .loading::after {
   content: "";
   display: inline-block;
   animation: dots 1.2s infinite steps(4, end);
-  color: #3A4F7A;
+  color: #2C3E50;
   font-family: 'Jua', system-ui, sans-serif;
-  font-weight: 600;
+  font-weight: 400;
 }
+
+/* 작은 로딩만 더 빠르게 */
+.loading.small::after {
+  animation-duration: 0.35s;
+}
+
 
 /* 작은 로딩 */
 .loading.small {
   font-size: 30px;
-  letter-spacing: 10px;
+  letter-spacing: 7px;
 }
 
 /* 큰 로딩 */
 .loading.big {
   font-size: clamp(40px, 6vw, 42px);
   letter-spacing: 10px;
-  display: block;
+  display: inline-block;
   margin: 12px 0;
 }
 
