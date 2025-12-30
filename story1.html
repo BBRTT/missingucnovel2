@@ -136,7 +136,7 @@
     h1 {
       font-size: 30px;
       text-align: center;
-      margin-bottom: 100px;
+      margin-bottom: 200px;
       color: #333;
       font-family: 'Nanum Myeongjo', serif;
     
@@ -238,7 +238,7 @@ html, body {
   z-index: 9999; /* 모든 콘텐츠 위 */
   opacity: 0; /* 처음에는 안 보이게 */
   pointer-events: none; /* 클릭 방해 안 함 */
-  transition: opacity 0.6s ease; /* 천천히 나타나고 사라짐 */
+  transition: opacity 1.0s ease; /* 천천히 나타나고 사라짐 */
 }
 
 /* 나타낼 때 */
@@ -396,7 +396,7 @@ document.body.addEventListener("click", () => {
 
   // 깜빡임 적용 (해당 클래스가 있을 때만)
   if (currentLine.classList.contains("black-flash")) {
-    flashBlack(200); // 200ms 깜빡임
+    flashBlack(1000); // 200ms 깜빡임
   }
 
   // 자동 스크롤
