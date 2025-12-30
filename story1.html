@@ -310,7 +310,7 @@ html, body {
   // ------------------------------
   // 교차 페이드(crossFade) 전환
   // ------------------------------
-  function crossFadeBgm(nextKey, duration = 4000) {
+  function crossFadeBgm(nextKey, duration = 8000) {
     const nextBgm = bgmMap[nextKey];
     if (!nextBgm) return;
 
@@ -346,10 +346,19 @@ html, body {
   // ------------------------------
   // 예시: 클릭 시 BGM 전환
   // ------------------------------
-  document.body.addEventListener("click", () => {
-    // 원하는 BGM key 넣으면 자연스럽게 교차 페이드
-    crossFadeBgm("bgm1-start", 4000);
+ document.body.addEventListener("click", () => {
+  if (index >= lines.length) return;
+  const currentLine = lines[index];
+
+  Object.keys(bgmMap).forEach(key => {
+    if (currentLine.classList.contains(key)) {
+      crossFadeBgm(key, 4000);
+    }
   });
+
+  index++;
+});
+
 
   // ------------------------------
   // 글 + BGM 변수
@@ -397,12 +406,6 @@ setTimeout(() => {
       block: "center"
     });
 
-    // 첫 BGM 시작 (있다면)
-    if (firstLine.classList.contains("bgm1-start")) {
-      currentBgm = bgmMap["bgm1-start"];
-      fadeInSmooth(currentBgm, 1500);
-    }
-
     return; // ⭐ 중요: 여기서 종료
   }
 
@@ -437,9 +440,9 @@ setTimeout(() => {
       if (currentLine.classList.contains(key)) {
         if (currentBgm !== bgmMap[key]) {
           if (currentBgm) {
-            fadeOutSmooth(currentBgm, 4000, () => {
+            fadeOutSmooth(currentBgm, 8000, () => {
               currentBgm = bgmMap[key];
-              fadeInSmooth(currentBgm, 4500);
+              fadeInSmooth(currentBgm, 4000);
             });
           } else {
             currentBgm = bgmMap[key];
