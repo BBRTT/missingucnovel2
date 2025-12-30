@@ -9,19 +9,7 @@
 
   <style>
 
-.title-divider {
-  width: 100vw;
-  height: 1px;
-  margin: 40px 0 60px;
-  background: rgba(0, 0, 0, 0.15);
 
-  box-shadow:
-  0 6px 20px rgba(0, 0, 0, 0.45),
-  0 3px 6px rgba(0, 0, 0, 0.35);
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-}
 
     /* --------------------------
        전체 페이지
@@ -50,30 +38,36 @@
 
   z-index: 1000;
   transition: opacity 0.8s ease;
+
+  /* ✨ 흰색 경계선 */
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.6);
 }
 
-/* 배경 블러 레이어 */
+/* 블러 레이어 */
 #intro::before {
   content: "";
   position: absolute;
   inset: 0;
   backdrop-filter: blur(2px);
+  pointer-events: none;
 }
+
+/* 노이즈 레이어 */
 #intro::after {
   content: "";
   position: absolute;
   inset: 0;
 
-  background-image: url("노이즈.png"); /* 노이즈 이미지 */
+  background-image: url("노이즈.png");
   background-repeat: repeat;
-  opacity: 0.08; /* ← 핵심: 낮게 */
+  opacity: 0.08;
 
   pointer-events: none;
 }
 
 /* 인트로 안 내용 */
 .intro-inner {
-  position: relative; /* ← 이거 중요 */
+  position: relative;
   text-align: center;
 }
 
@@ -98,7 +92,6 @@
   opacity: 0;
   pointer-events: none;
 }
-
 
       font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
       font-size: 15px;               /* 기본 본문 글씨 크기 */
