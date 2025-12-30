@@ -48,7 +48,7 @@
 /* 블러 레이어 */
 #intro::before {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
   backdrop-filter: blur(2px);
   pointer-events: none;
@@ -57,7 +57,7 @@
 /* 노이즈 레이어 */
 #intro::after {
   content: "";
-  position: fixed;
+  position: absolute;
   inset: 0;
 
   background-image: url("노이즈.png");
@@ -155,18 +155,7 @@
       line-height: 1.1;
       letter-spacing: -0.015em;
     }
-.story-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* 화면 중앙 위치 유지 */
-  width: 80%;
-  margin: 0 auto;
-}
-currentLine.scrollIntoView({
-  behavior: "auto",
-  block: "nearest"  // 화면 흔들림 최소화
-});
+
     /* --------------------------
        글 + 이미지 공통 스타일
     --------------------------- */
@@ -179,8 +168,6 @@ currentLine.scrollIntoView({
   max-width: 100%;
   height: auto;
   border: none;
-  display: block;
-  min-height: 2em; /* 줄 간격 일정하게 유지 */
 }
 
 .line.show {
@@ -241,7 +228,6 @@ img.line {
     
 html, body {
   overflow-x: hidden;
-  height:100%;
 }
 #black-overlay {
   position: fixed;
@@ -257,14 +243,8 @@ html, body {
 #black-overlay.active {
   opacity: 1;
 }
-html {
-  scrollbar-gutter: stable both-edges; /* 항상 스크롤바 공간 확보 */
-  overscroll-behavior: none; /* 모바일 바운스 제거 */
-}
-
-body {
-  overflow-y: scroll; /* 스크롤 항상 생성 */
-  margin: 0;          /* 여백으로 인한 흔들림 제거 */
+html, body {
+  overscroll-behavior: none;
 }
 
   </style>
@@ -288,7 +268,7 @@ body {
 <audio id="bgm4" src="가슴이 폴짝폴짝.mp3"></audio>
 <audio id="bgm5" src="사랑안해.mp3"></audio>
   
-<div class="story-container">
+<div id="story">
   <p class="line disappear bgm3-start">안녕하세요! 잘 지내셨나요?</p>
   <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
