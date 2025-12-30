@@ -17,30 +17,32 @@
     body {
 
       /* 인트로 전체 화면 */
+/* ==========================
+   INTRO
+========================== */
+
+/* 인트로 전체 화면 */
 #intro {
   position: fixed;
   inset: 0;
-
-  background-image:
-    linear-gradient(
-      rgba(0, 0, 0, 0.35),
-      rgba(0, 0, 0, 0.35)
-    ),
-    url("정환1.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  z-index: 1000;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  z-index: 1000;
-  transition: opacity 0.8s ease;
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15)
+    ),
+    url("정환1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  /* ✨ 흰색 경계선 */
-  box-shadow: inset 0 -1px 0 rgba(255,255,255,0.6);
+  transition: opacity 0.8s ease;
+  overflow: hidden; /* 스크롤바 방지 */
 }
 
 /* 블러 레이어 */
@@ -60,29 +62,48 @@
 
   background-image: url("노이즈.png");
   background-repeat: repeat;
-  opacity: 0.08;
+  opacity: 0.14;
+  mix-blend-mode: overlay;
 
   pointer-events: none;
 }
 
-/* 인트로 안 내용 */
+/* 하단 경계선 */
+#intro-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.7),
+    transparent
+  );
+
+  pointer-events: none;
+}
+
+/* 인트로 내용 */
 .intro-inner {
   position: relative;
   text-align: center;
 }
 
+/* 제목 */
 #intro h1 {
   font-family: 'Nanum Myeongjo', serif;
   font-size: 32px;
   margin-bottom: 16px;
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
+/* 설명 문구 */
 #intro p {
   font-size: 14px;
-}
-
-#intro h1,
-#intro p {
   color: #fff;
   text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
@@ -92,6 +113,7 @@
   opacity: 0;
   pointer-events: none;
 }
+
 
       font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
       font-size: 15px;               /* 기본 본문 글씨 크기 */
@@ -211,7 +233,7 @@ html, body {
 <div id="intro">
   <div class="intro-inner">
 <h1> 제발... <h1>
-<div class="title-divider"></div>
+<div id="intro-border"></div>
     <p>화면을 터치하면 이야기가 시작됩니다</p>
     <p>※ 본 글에는 사운드가 포함되어 있습니다 ※</p>
   </div>
