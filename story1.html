@@ -251,8 +251,13 @@ html, body {
 #black-overlay.active {
   opacity: 1;
 }
-html, body {
-  overscroll-behavior: none;
+html {
+  scrollbar-gutter: stable; /* 스크롤 공간 고정 */
+  overscroll-behavior: none; /* 스크롤 바운스 방지 */
+}
+
+body {
+  overflow-y: auto; /* 스크롤은 항상 남김 */
 }
 
   </style>
