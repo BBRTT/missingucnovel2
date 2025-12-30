@@ -351,27 +351,28 @@ html, body {
   // 클릭 이벤트
   // ------------------------------
   document.body.addEventListener("click", () => {
-    // 아직 인트로면
-    if (!introDone) {
-      introDone = true;
+   if (!introDone) {
+  introDone = true;
 
-      // 인트로 사라짐
-      const intro = document.getElementById("intro");
-      intro.classList.add("hide");
-      setTimeout(() => intro.classList.add("hidden"), 900);
+  // 인트로 숨기기
+  const intro = document.getElementById("intro");
+  intro.classList.add("hide");
 
-      // 첫 줄 보여주기
-      const firstLine = document.querySelector(".line");
-      firstLine.classList.add("show");
-      firstLine.scrollIntoView({ behavior: "smooth", block: "center" });
+  setTimeout(() => {
+    intro.classList.add("hidden");
+  }, 900);
 
-      return; // 첫 클릭 종료
-    }
+  // 첫 줄 보여주기
+  const firstLine = document.querySelector(".line");
+  firstLine.classList.add("show");
 
-    if (index >= lines.length) return;
+  firstLine.scrollIntoView({ behavior: "smooth", block: "center" });
 
-    const currentLine = lines[index];
+  // 첫 줄 index 설정
+  index = 1; // 기존 클릭 로직이 다음 줄부터 작동하도록
 
+  // return 제거!
+}
     // 이전 글 페이드 아웃
     const toDisappear = document.querySelectorAll(".disappear");
     toDisappear.forEach(line => {
