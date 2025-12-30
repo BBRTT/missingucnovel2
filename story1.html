@@ -155,6 +155,21 @@
       line-height: 1.1;
       letter-spacing: -0.015em;
     }
+/* story 어두워지는 오버레이 */
+#story::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4); /* 어둡기 정도 */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+/* 어두워질 때 적용 */
+#story.darken::after {
+  opacity: 1;
+}
 
     /* --------------------------
        글 + 이미지 공통 스타일
@@ -263,6 +278,7 @@ html, body {
   <p class="line bgm2-start"> 첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
+<p class="line disappear darken-trigger"></p>
 
 <script>
   // ------------------------------
@@ -318,7 +334,21 @@ html, body {
   // ------------------------------
   // 클릭 이벤트
   // ------------------------------
+ 
   document.body.addEventListener("click", () => {
+// story 어두워지게 하는 함수
+function darkenStory(duration = 500) {
+  const story = document.getElementById("story");
+  story.classList.add("darken");
+  setTimeout(() => {
+    story.classList.remove("darken");
+  }, duration);
+}
+
+// 글 등장 이벤트 안에서
+if (currentLine.classList.contains("darken-trigger")) {
+  darkenStory(500); // 0.5초 동안 어둡게
+}
 
   // 아직 인트로면
   if (!introDone) {
