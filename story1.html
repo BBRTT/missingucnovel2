@@ -62,7 +62,7 @@
 
   background-image: url("노이즈.png");
   background-repeat: repeat;
-  opacity: 0.1;
+  opacity: 0.2;
 
 
   pointer-events: none;
@@ -260,7 +260,7 @@ html, body {
   <span class="loading big"></span>
 </p>
 
-  <p class="line"> 첫문장</p>
+  <p class="line bgm2-start"> 첫문장</p>
   <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 </div>
 
@@ -268,7 +268,7 @@ html, body {
   // ------------------------------
   // 부드러운 페이드
   // ------------------------------
-  function fadeInSmooth(audio, duration = 1600) {
+  function fadeInSmooth(audio, duration = 4000) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
@@ -282,7 +282,7 @@ html, body {
     requestAnimationFrame(step);
   }
 
-  function fadeOutSmooth(audio, duration = 1600, callback) {
+  function fadeOutSmooth(audio, duration = 4500, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
     function step(now) {
