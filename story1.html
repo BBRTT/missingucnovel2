@@ -48,7 +48,7 @@
 /* 블러 레이어 */
 #intro::before {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
   backdrop-filter: blur(2px);
   pointer-events: none;
@@ -57,7 +57,7 @@
 /* 노이즈 레이어 */
 #intro::after {
   content: "";
-  position: absolute;
+  position: fixed;
   inset: 0;
 
   background-image: url("노이즈.png");
@@ -252,12 +252,13 @@ html, body {
   opacity: 1;
 }
 html {
-  scrollbar-gutter: stable; /* 스크롤 공간 고정 */
-  overscroll-behavior: none; /* 스크롤 바운스 방지 */
+  scrollbar-gutter: stable both-edges; /* 항상 스크롤바 공간 확보 */
+  overscroll-behavior: none; /* 모바일 바운스 제거 */
 }
 
 body {
-  overflow-y: auto; /* 스크롤은 항상 남김 */
+  overflow-y: scroll; /* 스크롤 항상 생성 */
+  margin: 0;          /* 여백으로 인한 흔들림 제거 */
 }
 
   </style>
