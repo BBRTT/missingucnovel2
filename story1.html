@@ -155,21 +155,6 @@
       line-height: 1.1;
       letter-spacing: -0.015em;
     }
-/* story 어두워지는 오버레이 */
-#story::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.4); /* 어둡기 정도 */
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-}
-
-/* 어두워질 때 적용 */
-#story.darken::after {
-  opacity: 1;
-}
 
     /* --------------------------
        글 + 이미지 공통 스타일
@@ -244,6 +229,25 @@ img.line {
 html, body {
   overflow-x: hidden;
 }
+    /* --------------------------
+   본문 특정 글 등장 시 배경 이미지/어둡게 깜빡임
+--------------------------- */
+.line.dark-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3) url("dark-bg.jpg") center/cover no-repeat;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1; /* 글보다 뒤 */
+  transition: opacity 0.5s ease;
+}
+
+/* 글 등장 시 활성화 */
+.line.dark-bg.show::before {
+  opacity: 1;
+}
+
   </style>
 </head>
 
@@ -260,12 +264,12 @@ html, body {
 <audio id="bgm1" src="모야.mp3"></audio>
 <audio id="bgm2" src="살만찌고.mp3"></audio>
 <audio id="bgm3" src="초콜렛군 오렌지양.mp3"></audio>
-<audio id="bgm4" src="bgm4.mp3"></audio>
-<audio id="bgm5" src="bgm5.mp3"></audio>
+<audio id="bgm4" src="가슴이 폴짝폴짝.mp3"></audio>
+<audio id="bgm5" src="사랑안해.mp3"></audio>
   
 <div id="story">
   <p class="line disappear bgm3-start">안녕하세요! 잘 지내셨나요?</p>
-  <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 그리고 아직도 그 꿈을 잊지 못하고 결국엔 이렇게 만들어버렸답니다.^^.</p>
+  <p class="line disappear">예전의 전 유씨노벨 작가가 되는게 꿈이었어요. 하지만 그러기도 전에 그 꿈의 공간이 사라져버렸고 저는 아직도 그 공간을 그리워 하고 다시 꿈꾸고 있어요. 유씨노벨과 같진 않지만 유씨노벨만의 기능을 조금 추가한 이런 공간을 만들어봤습니다.^^.</p>
   <p class="line disappear">그때의 감성이 잘 묻어나는 글이 되길 바라면서 써봅니다. 그럼 재밌게 봐주세요!</p>
   <p class="line disappear">
   <span class="loading small"></span>
@@ -276,9 +280,10 @@ html, body {
 </p>
 
   <p class="line bgm2-start"> 첫문장</p>
-  <img class="line" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
+  <img class="line bgm4-start" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
+  <p class="line disappear dark-bg"></p>
+
 </div>
-<p class="line disappear darken-trigger"></p>
 
 <script>
   // ------------------------------
@@ -334,8 +339,7 @@ html, body {
   // ------------------------------
   // 클릭 이벤트
   // ------------------------------
- 
- 
+  document.body.addEventListener("click", () => {
 
   // 아직 인트로면
   if (!introDone) {
@@ -415,21 +419,6 @@ setTimeout(() => {
 
     index++;
   });
-
-   document.body.addEventListener("click", () => {
-// story 어두워지게 하는 함수
-function darkenStory(duration = 500) {
-  const story = document.getElementById("story");
-  story.classList.add("darken");
-  setTimeout(() => {
-    story.classList.remove("darken");
-  }, duration);
-}
-
-// 글 등장 이벤트 안에서
-if (currentLine.classList.contains("darken-trigger")) {
-  darkenStory(500); // 0.5초 동안 어둡게
-}
 </script>
 
 
