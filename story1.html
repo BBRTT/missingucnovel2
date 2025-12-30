@@ -116,8 +116,26 @@
 #intro.hidden {
   display: none;
 }
+/* 스크롤바 전체 */
+::-webkit-scrollbar {
+  width: 8px;
+}
 
+/* 스크롤바 트랙 */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 
+/* 스크롤바 손잡이 */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(60, 60, 90, 0.35); /* 남색 계열 */
+  border-radius: 10px;
+}
+
+/* 호버 시 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(60, 60, 90, 0.55);
+}
 
       font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
       font-size: 15px;               /* 기본 본문 글씨 크기 */
