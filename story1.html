@@ -229,24 +229,21 @@ img.line {
 html, body {
   overflow-x: hidden;
 }
-    /* --------------------------
-   본문 특정 글 등장 시 배경 이미지/어둡게 깜빡임
---------------------------- */
-.line.dark-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.3) url("검은화면.png") center/cover no-repeat;
-  opacity: 0;
-  pointer-events: none;
-  z-index: -1; /* 글보다 뒤 */
-  transition: opacity 0.5s ease;
+#black-overlay {
+  position: fixed;
+  inset: 0; /* 상하좌우 0 */
+  background: rgba(0,0,0,0.9); /* 검은색 + 투명도 조절 */
+  z-index: 9999; /* 모든 콘텐츠 위 */
+  opacity: 0; /* 처음에는 안 보이게 */
+  pointer-events: none; /* 클릭 방해 안 함 */
+  transition: opacity 0.3s ease; /* 천천히 나타나고 사라짐 */
 }
 
-/* 글 등장 시 활성화 */
-.line.dark-bg.show::before {
+/* 나타낼 때 */
+#black-overlay.active {
   opacity: 1;
 }
+
 
   </style>
 </head>
@@ -332,7 +329,19 @@ html, body {
     "bgm4-start": document.getElementById("bgm4"),
     "bgm5-start": document.getElementById("bgm5")
   };
+ function playBgm(key) {
+  const next = bgmMap[key];
+  if (!next) return;
 
+  if (currentBgm && currentBgm !== next) {
+    currentBgm.pause();
+    currentBgm.currentTime = 0;
+  }
+
+  currentBgm = next;
+  currentBgm.volume = 1;
+  currentBgm.play();
+}
   let introDone = false;
   let currentBgm = null;
 
@@ -399,6 +408,14 @@ setTimeout(() => {
   behavior: window.innerWidth < 768 ? "smooth" : "auto",
   block: "center"
 });
+    
+function flashBlack(duration = 300) {
+  const overlay = document.getElementById("black-overlay");
+  overlay.classList.add("active");
+  setTimeout(() => {
+    overlay.classList.remove("active");
+  }, duration);
+}
 
     // 첫 등장 + BGM 시작
     Object.keys(bgmMap).forEach(key => {
