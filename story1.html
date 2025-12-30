@@ -113,6 +113,10 @@
   opacity: 0;
   pointer-events: none;
 }
+#intro.hidden {
+  display: none;
+}
+
 
 
       font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
@@ -323,6 +327,13 @@ html, body {
 
     // 인트로 사라짐
     document.getElementById("intro").classList.add("hide");
+    const intro = document.getElementById("intro");
+intro.classList.add("hide");
+
+setTimeout(() => {
+  intro.classList.add("hidden");
+}, 900); // opacity 0.8s + 여유
+
 
     // 첫 줄 보여주기
     const firstLine = document.querySelector(".line");
