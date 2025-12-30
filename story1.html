@@ -268,23 +268,32 @@ html, body {
   // ------------------------------
   // 부드러운 페이드
   // ------------------------------
-  function fadeInSmooth(audio, duration = 4000) {
+   function fadeInSmooth(audio, duration = 4000) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
-    audio.play();
-    const startTime = performance.now();
-    function step(now) {
-      const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = Math.sin(t * Math.PI / 2);
-      if (t < 1) requestAnimationFrame(step);
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        const startTime = performance.now();
+        function step(now) {
+          const t = Math.min((now - startTime) / duration, 1);
+          audio.volume = Math.sin(t * Math.PI / 2);
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }).catch(e => console.log("BGM play failed:", e));
     }
-    requestAnimationFrame(step);
   }
 
+  // ------------------------------
+  // 페이드아웃
+  // ------------------------------
   function fadeOutSmooth(audio, duration = 4500, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
+
     function step(now) {
       const t = Math.min((now - startTime) / duration, 1);
       audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
@@ -297,6 +306,32 @@ html, body {
     }
     requestAnimationFrame(step);
   }
+
+  // ------------------------------
+  // BGM 전환 함수
+  // ------------------------------
+  function playBgm(key) {
+    const nextBgm = bgmMap[key];
+    if (!nextBgm) return;
+
+    if (currentBgm && currentBgm !== nextBgm) {
+      fadeOutSmooth(currentBgm, 8000, () => {
+        currentBgm = nextBgm;
+        fadeInSmooth(currentBgm, 6000);
+      });
+    } else if (!currentBgm) {
+      currentBgm = nextBgm;
+      fadeInSmooth(currentBgm, 6000);
+    }
+  }
+
+  // ------------------------------
+  // 예시: 클릭 시 BGM 전환
+  // ------------------------------
+  document.body.addEventListener("click", () => {
+    // 예시: 첫 줄 bgm1 시작
+    playBgm("bgm1-start");
+  });
 
   // ------------------------------
   // 글 + BGM 변수
@@ -384,13 +419,13 @@ setTimeout(() => {
       if (currentLine.classList.contains(key)) {
         if (currentBgm !== bgmMap[key]) {
           if (currentBgm) {
-            fadeOutSmooth(currentBgm, 1000, () => {
+            fadeOutSmooth(currentBgm, 4000, () => {
               currentBgm = bgmMap[key];
-              fadeInSmooth(currentBgm, 1500);
+              fadeInSmooth(currentBgm, 4500);
             });
           } else {
             currentBgm = bgmMap[key];
-            fadeInSmooth(currentBgm, 1500);
+            fadeInSmooth(currentBgm, 4000);
           }
         }
       }
