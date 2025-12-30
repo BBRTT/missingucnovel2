@@ -266,9 +266,9 @@ html, body {
 
 <script>
   // ------------------------------
-  // 일반 페이드인
+  // 부드러운 페이드
   // ------------------------------
-  function fadeInSmooth(audio, duration = 4000) {
+   function fadeInSmooth(audio, duration = 4000) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
@@ -288,9 +288,9 @@ html, body {
   }
 
   // ------------------------------
-  // 일반 페이드아웃
+  // 페이드아웃
   // ------------------------------
-  function fadeOutSmooth(audio, duration = 4000, callback) {
+  function fadeOutSmooth(audio, duration = 4500, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
 
@@ -308,37 +308,30 @@ html, body {
   }
 
   // ------------------------------
-  // 교차 페이드
+  // BGM 전환 함수
   // ------------------------------
-  function crossFadeBgm(nextKey, duration = 4000) {
-    const nextBgm = bgmMap[nextKey];
+  function playBgm(key) {
+    const nextBgm = bgmMap[key];
     if (!nextBgm) return;
 
     if (currentBgm && currentBgm !== nextBgm) {
-      nextBgm.volume = 0;
-      nextBgm.currentTime = 0;
-      nextBgm.play();
-
-      const startTime = performance.now();
-      const oldBgm = currentBgm;
-
-      function step(now) {
-        const t = Math.min((now - startTime) / duration, 1);
-        oldBgm.volume = Math.cos(t * Math.PI / 2);
-        nextBgm.volume = Math.sin(t * Math.PI / 2);
-
-        if (t < 1) requestAnimationFrame(step);
-        else {
-          oldBgm.pause();
-          currentBgm = nextBgm;
-        }
-      }
-      requestAnimationFrame(step);
+      fadeOutSmooth(currentBgm, 8000, () => {
+        currentBgm = nextBgm;
+        fadeInSmooth(currentBgm, 6000);
+      });
     } else if (!currentBgm) {
       currentBgm = nextBgm;
-      fadeInSmooth(currentBgm, duration);
+      fadeInSmooth(currentBgm, 6000);
     }
   }
+
+  // ------------------------------
+  // 예시: 클릭 시 BGM 전환
+  // ------------------------------
+  document.body.addEventListener("click", () => {
+    // 예시: 첫 줄 bgm1 시작
+    playBgm("bgm1-start");
+  });
 
   // ------------------------------
   // 글 + BGM 변수
@@ -358,21 +351,47 @@ html, body {
   let currentBgm = null;
 
   // ------------------------------
-  // 클릭 이벤트 통합
+  // 클릭 이벤트
   // ------------------------------
   document.body.addEventListener("click", () => {
 
-    // 1️⃣ 인트로 처리
-    if (!introDone) {
-      introDone = true;
-      const intro = document.getElementById("intro");
-      intro.classList.add("hide");
-      setTimeout(() => {
-        intro.classList.add("hidden");
-      }, 900); // opacity + 여유
+  // 아직 인트로면
+  if (!introDone) {
+    introDone = true;
+
+    // 인트로 사라짐
+    document.getElementById("intro").classList.add("hide");
+    const intro = document.getElementById("intro");
+intro.classList.add("hide");
+
+setTimeout(() => {
+  intro.classList.add("hidden");
+}, 900); // opacity 0.8s + 여유
+
+
+    // 첫 줄 보여주기
+    const firstLine = document.querySelector(".line");
+    firstLine.classList.add("show");
+
+    // 자동 스크롤
+    firstLine.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    // 첫 BGM 시작 (있다면)
+    if (firstLine.classList.contains("bgm1-start")) {
+      currentBgm = bgmMap["bgm1-start"];
+      fadeInSmooth(currentBgm, 1500);
     }
 
-    // 2️⃣ 첫 줄 및 기존 로직
+    return; // ⭐ 중요: 여기서 종료
+  }
+
+  // ↓↓↓ 여기부터는 기존 클릭 로직 그대로 ↓↓↓
+});
+
+  document.body.addEventListener("click", () => {
     if (index >= lines.length) return;
 
     const currentLine = lines[index];
@@ -390,16 +409,25 @@ html, body {
     currentLine.classList.add("show");
     currentLine.classList.remove("hide");
 
-    // 스크롤
     currentLine.scrollIntoView({
-      behavior: window.innerWidth < 768 ? "smooth" : "auto",
-      block: "center"
-    });
+  behavior: window.innerWidth < 768 ? "smooth" : "auto",
+  block: "center"
+});
 
-    // 라인별 BGM 처리
+    // 첫 등장 + BGM 시작
     Object.keys(bgmMap).forEach(key => {
       if (currentLine.classList.contains(key)) {
-        crossFadeBgm(key, 4000);
+        if (currentBgm !== bgmMap[key]) {
+          if (currentBgm) {
+            fadeOutSmooth(currentBgm, 4000, () => {
+              currentBgm = bgmMap[key];
+              fadeInSmooth(currentBgm, 4500);
+            });
+          } else {
+            currentBgm = bgmMap[key];
+            fadeInSmooth(currentBgm, 4000);
+          }
+        }
       }
     });
 
