@@ -394,7 +394,7 @@ setTimeout(() => {
     currentLine.classList.remove("hide");
 
     currentLine.scrollIntoView({
-  behavior: "smooth",
+  behavior: window.innerWidth < 768 ? "smooth" : "auto",
   block: "center"
 });
 
