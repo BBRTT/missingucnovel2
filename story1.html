@@ -335,20 +335,7 @@ html, body {
   // 클릭 이벤트
   // ------------------------------
  
-  document.body.addEventListener("click", () => {
-// story 어두워지게 하는 함수
-function darkenStory(duration = 500) {
-  const story = document.getElementById("story");
-  story.classList.add("darken");
-  setTimeout(() => {
-    story.classList.remove("darken");
-  }, duration);
-}
-
-// 글 등장 이벤트 안에서
-if (currentLine.classList.contains("darken-trigger")) {
-  darkenStory(500); // 0.5초 동안 어둡게
-}
+ 
 
   // 아직 인트로면
   if (!introDone) {
@@ -428,6 +415,21 @@ setTimeout(() => {
 
     index++;
   });
+
+   document.body.addEventListener("click", () => {
+// story 어두워지게 하는 함수
+function darkenStory(duration = 500) {
+  const story = document.getElementById("story");
+  story.classList.add("darken");
+  setTimeout(() => {
+    story.classList.remove("darken");
+  }, duration);
+}
+
+// 글 등장 이벤트 안에서
+if (currentLine.classList.contains("darken-trigger")) {
+  darkenStory(500); // 0.5초 동안 어둡게
+}
 </script>
 
 
