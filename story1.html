@@ -62,7 +62,7 @@
 
   background-image: url("노이즈.png");
   background-repeat: repeat;
-  opacity: 0.1;
+  opacity: 0.2;
 
 
   pointer-events: none;
@@ -266,25 +266,34 @@ html, body {
 
 <script>
   // ------------------------------
-  // 부드러운 페이드
+  // 일반 페이드인
   // ------------------------------
-  function fadeInSmooth(audio, duration = 1600) {
+  function fadeInSmooth(audio, duration = 4000) {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0;
-    audio.play();
-    const startTime = performance.now();
-    function step(now) {
-      const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = Math.sin(t * Math.PI / 2);
-      if (t < 1) requestAnimationFrame(step);
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        const startTime = performance.now();
+        function step(now) {
+          const t = Math.min((now - startTime) / duration, 1);
+          audio.volume = Math.sin(t * Math.PI / 2);
+          if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }).catch(e => console.log("BGM play failed:", e));
     }
-    requestAnimationFrame(step);
   }
 
-  function fadeOutSmooth(audio, duration = 1600, callback) {
+  // ------------------------------
+  // 일반 페이드아웃
+  // ------------------------------
+  function fadeOutSmooth(audio, duration = 8000, callback) {
     const startTime = performance.now();
     const initialVolume = audio.volume;
+
     function step(now) {
       const t = Math.min((now - startTime) / duration, 1);
       audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
@@ -297,6 +306,59 @@ html, body {
     }
     requestAnimationFrame(step);
   }
+
+  // ------------------------------
+  // 교차 페이드(crossFade) 전환
+  // ------------------------------
+  function crossFadeBgm(nextKey, duration = 8000) {
+    const nextBgm = bgmMap[nextKey];
+    if (!nextBgm) return;
+
+    if (currentBgm && currentBgm !== nextBgm) {
+      // 새 곡 미리 준비
+      nextBgm.volume = 0;
+      nextBgm.currentTime = 0;
+      nextBgm.play();
+
+      const startTime = performance.now();
+      const oldBgm = currentBgm;
+
+      function step(now) {
+        const t = Math.min((now - startTime) / duration, 1);
+        oldBgm.volume = Math.cos(t * Math.PI / 2); // 기존 BGM 감소
+        nextBgm.volume = Math.sin(t * Math.PI / 2); // 새 BGM 증가
+
+        if (t < 1) requestAnimationFrame(step);
+        else {
+          oldBgm.pause();
+          currentBgm = nextBgm;
+        }
+      }
+      requestAnimationFrame(step);
+
+    } else if (!currentBgm) {
+      // 첫 곡이면 그냥 페이드인
+      currentBgm = nextBgm;
+      fadeInSmooth(currentBgm, duration);
+    }
+  }
+
+  // ------------------------------
+  // 예시: 클릭 시 BGM 전환
+  // ------------------------------
+ document.body.addEventListener("click", () => {
+  if (index >= lines.length) return;
+  const currentLine = lines[index];
+
+  Object.keys(bgmMap).forEach(key => {
+    if (currentLine.classList.contains(key)) {
+      crossFadeBgm(key, 4000);
+    }
+  });
+
+  index++;
+});
+
 
   // ------------------------------
   // 글 + BGM 변수
@@ -344,12 +406,6 @@ setTimeout(() => {
       block: "center"
     });
 
-    // 첫 BGM 시작 (있다면)
-    if (firstLine.classList.contains("bgm1-start")) {
-      currentBgm = bgmMap["bgm1-start"];
-      fadeInSmooth(currentBgm, 1500);
-    }
-
     return; // ⭐ 중요: 여기서 종료
   }
 
@@ -384,13 +440,13 @@ setTimeout(() => {
       if (currentLine.classList.contains(key)) {
         if (currentBgm !== bgmMap[key]) {
           if (currentBgm) {
-            fadeOutSmooth(currentBgm, 1000, () => {
+            fadeOutSmooth(currentBgm, 8000, () => {
               currentBgm = bgmMap[key];
-              fadeInSmooth(currentBgm, 1500);
+              fadeInSmooth(currentBgm, 4000);
             });
           } else {
             currentBgm = bgmMap[key];
-            fadeInSmooth(currentBgm, 1500);
+            fadeInSmooth(currentBgm, 4000);
           }
         }
       }
