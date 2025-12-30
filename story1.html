@@ -162,8 +162,12 @@
   align-items: center; /* 화면 중앙 위치 유지 */
   width: 80%;
   margin: 0 auto;
+  padding-top: 20vh; /* 화면 상단에서 내려오는 위치 */
 }
-
+currentLine.scrollIntoView({
+  behavior: "auto",
+  block: "nearest"  // 화면 흔들림 최소화
+});
     /* --------------------------
        글 + 이미지 공통 스타일
     --------------------------- */
@@ -176,7 +180,8 @@
   max-width: 100%;
   height: auto;
   border: none;
-  
+  display: block;
+  min-height: 2em; /* 줄 간격 일정하게 유지 */
 }
 
 .line.show {
