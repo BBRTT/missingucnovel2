@@ -384,25 +384,40 @@ html, body {
     currentLine.classList.remove("hide");
     currentLine.scrollIntoView({ behavior: window.innerWidth < 768 ? "smooth" : "auto", block: "center" });
 
-    // 검은 화면 깜빡임 (원하면 특정 글에만 호출 가능)
-    flashBlack(300);
+    // 배경 깜빡이기 함수
+function flashBackground(duration = 200) {
+  const overlay = document.getElementById("black-overlay");
+  overlay.classList.add("active");
+  setTimeout(() => {
+    overlay.classList.remove("active");
+  }, duration);
+}
 
-    // BGM 처리
-    Object.keys(bgmMap).forEach(key => {
-      if (currentLine.classList.contains(key)) {
-        if (currentBgm !== bgmMap[key]) {
-          if (currentBgm) {
-            fadeOutSmooth(currentBgm, 1000, () => {
-              currentBgm = bgmMap[key];
-              fadeInSmooth(currentBgm, 1500);
-            });
-          } else {
-            currentBgm = bgmMap[key];
-            fadeInSmooth(currentBgm, 1500);
-          }
-        }
-      }
-    });
+// 사용 예시: 특정 글 등장할 때
+const lines = document.querySelectorAll(".line");
+let index = 0;
+
+document.body.addEventListener("click", () => {
+  if (index >= lines.length) return;
+  const currentLine = lines[index];
+
+  // 특정 조건에서만 깜빡이게
+  if (currentLine.classList.contains("flash-bg")) {
+    flashBackground(200); // 0.2초 동안 깜빡임
+  }
+
+  // 기존 글 등장 로직...
+  currentLine.classList.add("show");
+  currentLine.classList.remove("hide");
+
+  currentLine.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+
+  index++;
+});
+
 
     index++;
   });
