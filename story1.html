@@ -122,7 +122,7 @@
       font-size: 15px;               /* 기본 본문 글씨 크기 */
       line-height: 1.1;              /* 줄 간격 */
       letter-spacing: -0.015em;
-      padding: 0 20px;
+      padding: 0 10px;
       cursor: pointer;
       display: flex;
       flex-direction: column;
@@ -149,11 +149,16 @@
     #story {
       font-family: 'SUIT', sans-serif;
       max-width: 600px;
-      text-align: center;
+      text-align: left;
       margin: 0 auto;
-      padding: 0 20px;
+      padding: 0 10px;
       line-height: 1.1;
       letter-spacing: -0.015em;
+      position: absolute;  /* 이미 중앙 배치 중이라면 그대로 두고 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;          /* 원하는 너비 *
     }
 
     /* --------------------------
@@ -168,6 +173,7 @@
   max-width: 100%;
   height: auto;
   border: none;
+  
 }
 
 .line.show {
