@@ -251,6 +251,8 @@ html, body {
 </head>
 
 <body>
+  <!-- 깜빡임용 오버레이 -->
+<div id="black-overlay"></div> 
 <div id="intro">
   <div class="intro-inner">
 <h1> 제발... <h1>
@@ -280,145 +282,146 @@ html, body {
 
   <p class="line bgm2-start"> 첫문장</p>
   <img class="line bgm4-start" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
-  <div id="black-overlay"></div>
+
+  <p class="line black-flash"></p>
 
 
 </div>
 
 <script>
-  // ------------------------------
-  // 부드러운 페이드
-  // ------------------------------
-  function fadeInSmooth(audio, duration = 1500) {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.volume = 0;
-    audio.play();
-    const startTime = performance.now();
-    function step(now) {
-      const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = Math.sin(t * Math.PI / 2);
-      if (t < 1) requestAnimationFrame(step);
+// ------------------------------
+// BGM 페이드인/페이드아웃
+// ------------------------------
+function fadeInSmooth(audio, duration = 1500) {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.volume = 0;
+  audio.play();
+  const startTime = performance.now();
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    audio.volume = Math.sin(t * Math.PI / 2);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function fadeOutSmooth(audio, duration = 1500, callback) {
+  const startTime = performance.now();
+  const initialVolume = audio.volume;
+  function step(now) {
+    const t = Math.min((now - startTime) / duration, 1);
+    audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
+    if (t < 1) requestAnimationFrame(step);
+    else {
+      audio.pause();
+      audio.currentTime = 0;
+      if (callback) callback();
     }
-    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ------------------------------
+// 글 + BGM 변수
+// ------------------------------
+const lines = document.querySelectorAll(".line");
+let index = 0;
+
+const bgmMap = {
+  "bgm1-start": document.getElementById("bgm1"),
+  "bgm2-start": document.getElementById("bgm2"),
+  "bgm3-start": document.getElementById("bgm3"),
+  "bgm4-start": document.getElementById("bgm4"),
+  "bgm5-start": document.getElementById("bgm5")
+};
+
+let currentBgm = null;
+let introDone = false;
+
+// ------------------------------
+// 깜빡임 함수
+// ------------------------------
+function flashBlack(duration = 200) {
+  const overlay = document.getElementById("black-overlay");
+  overlay.classList.add("active");
+  setTimeout(() => {
+    overlay.classList.remove("active");
+  }, duration);
+}
+
+// ------------------------------
+// 클릭 이벤트
+// ------------------------------
+document.body.addEventListener("click", () => {
+
+  // 아직 인트로면
+  if (!introDone) {
+    introDone = true;
+
+    const intro = document.getElementById("intro");
+    intro.classList.add("hide");
+
+    setTimeout(() => {
+      intro.classList.add("hidden");
+    }, 900);
+
+    // 첫 줄 보여주기
+    const firstLine = document.querySelector(".line");
+    firstLine.classList.add("show");
+    firstLine.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    return;
   }
 
-  function fadeOutSmooth(audio, duration = 1500, callback) {
-    const startTime = performance.now();
-    const initialVolume = audio.volume;
-    function step(now) {
-      const t = Math.min((now - startTime) / duration, 1);
-      audio.volume = initialVolume * Math.cos(t * Math.PI / 2);
-      if (t < 1) requestAnimationFrame(step);
-      else {
-        audio.pause();
-        audio.currentTime = 0;
-        if (callback) callback();
-      }
+  // 인덱스 초과 방지
+  if (index >= lines.length) return;
+
+  const currentLine = lines[index];
+
+  // 이전 글 숨기기
+  const toDisappear = document.querySelectorAll(".disappear");
+  toDisappear.forEach(line => {
+    if (line !== currentLine) {
+      line.classList.remove("show");
+      line.classList.add("hide");
     }
-    requestAnimationFrame(step);
-  }
-
-  // ------------------------------
-  // BGM 전환
-  // ------------------------------
-  const bgmMap = {
-    "bgm1-start": document.getElementById("bgm1"),
-    "bgm2-start": document.getElementById("bgm2"),
-    "bgm3-start": document.getElementById("bgm3"),
-    "bgm4-start": document.getElementById("bgm4"),
-    "bgm5-start": document.getElementById("bgm5")
-  };
-  let currentBgm = null;
-
-  function playBgm(key) {
-    const nextBgm = bgmMap[key];
-    if (!nextBgm) return;
-
-    if (currentBgm && currentBgm !== nextBgm) {
-      currentBgm.pause();
-      currentBgm.currentTime = 0;
-    }
-
-    currentBgm = nextBgm;
-    currentBgm.volume = 1;
-    currentBgm.play();
-  }
-
-  // ------------------------------
-  // 배경 깜빡임
-  // ------------------------------
-  function flashBlack(duration = 300) {
-    const overlay = document.getElementById("black-overlay");
-    overlay.classList.add("active");
-    setTimeout(() => overlay.classList.remove("active"), duration);
-  }
-
-  // ------------------------------
-  // 글 + 인덱스
-  // ------------------------------
-  const lines = document.querySelectorAll(".line");
-  let index = 0;
-  let introDone = false;
-
-  // ------------------------------
-  // 클릭 이벤트 통합
-  // ------------------------------
-  document.body.addEventListener("click", () => {
-    // 1️⃣ 인트로 처리
-    if (!introDone) {
-      introDone = true;
-      const intro = document.getElementById("intro");
-      intro.classList.add("hide");
-      setTimeout(() => intro.classList.add("hidden"), 900);
-
-      // 첫 줄 보여주기
-      const firstLine = lines[0];
-      firstLine.classList.add("show");
-      firstLine.scrollIntoView({ behavior: "smooth", block: "center" });
-
-      // 첫 BGM 시작
-      Object.keys(bgmMap).forEach(key => {
-        if (firstLine.classList.contains(key)) {
-          playBgm(key);
-        }
-      });
-
-      index = 1; // 다음 클릭부터 두 번째 줄
-      return;
-    }
-
-    // 2️⃣ 글 처리
-    if (index >= lines.length) return;
-    const currentLine = lines[index];
-
-    // 이전 글 페이드 아웃
-    document.querySelectorAll(".disappear").forEach(line => {
-      if (line !== currentLine) {
-        line.classList.remove("show");
-        line.classList.add("hide");
-      }
-    });
-
-    // 현재 글 등장
-    currentLine.classList.add("show");
-    currentLine.classList.remove("hide");
-
-    // 배경 깜빡임
-    flashBlack(300);
-
-    // 스크롤
-    currentLine.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    // BGM 전환
-    Object.keys(bgmMap).forEach(key => {
-      if (currentLine.classList.contains(key)) {
-        playBgm(key);
-      }
-    });
-
-    index++;
   });
+
+  // 현재 글 등장
+  currentLine.classList.add("show");
+  currentLine.classList.remove("hide");
+
+  // 깜빡임 적용 (해당 클래스가 있을 때만)
+  if (currentLine.classList.contains("black-flash")) {
+    flashBlack(200); // 200ms 깜빡임
+  }
+
+  // 자동 스크롤
+  currentLine.scrollIntoView({
+    behavior: window.innerWidth < 768 ? "smooth" : "auto",
+    block: "center"
+  });
+
+  // BGM 시작/전환
+  Object.keys(bgmMap).forEach(key => {
+    if (currentLine.classList.contains(key)) {
+      if (currentBgm !== bgmMap[key]) {
+        if (currentBgm) {
+          fadeOutSmooth(currentBgm, 1000, () => {
+            currentBgm = bgmMap[key];
+            fadeInSmooth(currentBgm, 1500);
+          });
+        } else {
+          currentBgm = bgmMap[key];
+          fadeInSmooth(currentBgm, 1500);
+        }
+      }
+    }
+  });
+
+  index++;
+});
 </script>
 
 
