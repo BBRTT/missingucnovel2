@@ -154,12 +154,14 @@
       padding: 0 10px;
       line-height: 1.1;
       letter-spacing: -0.015em;
-      position: absolute;  /* 이미 중앙 배치 중이라면 그대로 두고 */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80%;          /* 원하는 너비 *
     }
+.story-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* 화면 중앙 위치 유지 */
+  width: 100%;
+}
 
     /* --------------------------
        글 + 이미지 공통 스타일
