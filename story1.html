@@ -243,7 +243,9 @@ html, body {
 #black-overlay.active {
   opacity: 1;
 }
-
+html, body {
+  overscroll-behavior: none;
+}
 
   </style>
 </head>
@@ -384,7 +386,7 @@ html, body {
     currentLine.classList.remove("hide");
     currentLine.scrollIntoView({ behavior: window.innerWidth < 768 ? "smooth" : "auto", block: "center" });
 
-    // 배경 깜빡이기 함수
+// 깜빡임 함수
 function flashBackground(duration = 200) {
   const overlay = document.getElementById("black-overlay");
   overlay.classList.add("active");
@@ -393,34 +395,38 @@ function flashBackground(duration = 200) {
   }, duration);
 }
 
-// 사용 예시: 특정 글 등장할 때
+// 클릭 시 글 등장 + 깜빡임 예시
 const lines = document.querySelectorAll(".line");
 let index = 0;
 
 document.body.addEventListener("click", () => {
   if (index >= lines.length) return;
+
   const currentLine = lines[index];
 
-  // 특정 조건에서만 깜빡이게
-  if (currentLine.classList.contains("flash-bg")) {
-    flashBackground(200); // 0.2초 동안 깜빡임
-  }
+  // 이전 글 숨기기
+  document.querySelectorAll(".line.show").forEach(line => {
+    line.classList.remove("show");
+    line.classList.add("hide");
+  });
 
-  // 기존 글 등장 로직...
+  // 글 등장
   currentLine.classList.add("show");
   currentLine.classList.remove("hide");
 
+  // **스크롤 먼저**
   currentLine.scrollIntoView({
-    behavior: "smooth",
+    behavior: window.innerWidth < 768 ? "smooth" : "auto",
     block: "center"
   });
 
+  // **그 다음 깜빡임**
+  if (currentLine.classList.contains("flash-black")) {
+    flashBackground(200);
+  }
+
   index++;
 });
-
-
-    index++;
-  });
 </script>
 
 
