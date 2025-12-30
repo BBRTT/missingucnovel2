@@ -32,28 +32,54 @@
 #intro {
   position: fixed;
   inset: 0;
-  background: #fafafa;
+
+  background-image:
+    linear-gradient(
+      rgba(0, 0, 0, 0.35),
+      rgba(0, 0, 0, 0.35)
+    ),
+    url("KakaoTalk_20251229_220819096.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 1000;
   transition: opacity 0.8s ease;
 }
 
+/* 배경 블러 레이어 */
+#intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(2px);
+}
+
 /* 인트로 안 내용 */
 .intro-inner {
+  position: relative; /* ← 이거 중요 */
   text-align: center;
 }
 
 #intro h1 {
   font-family: 'Nanum Myeongjo', serif;
   font-size: 32px;
-  margin-bottom: 16px; 
+  margin-bottom: 16px;
 }
 
 #intro p {
   font-size: 14px;
-  color: #666;
+}
+
+#intro h1,
+#intro p {
+  color: #fff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 /* 사라질 때 */
@@ -61,6 +87,7 @@
   opacity: 0;
   pointer-events: none;
 }
+
 
       font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
       font-size: 15px;               /* 기본 본문 글씨 크기 */
