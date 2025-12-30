@@ -59,6 +59,17 @@
   inset: 0;
   backdrop-filter: blur(2px);
 }
+#intro::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: url("noise.png"); /* 노이즈 이미지 */
+  background-repeat: repeat;
+  opacity: 0.08; /* ← 핵심: 낮게 */
+
+  pointer-events: none;
+}
 
 /* 인트로 안 내용 */
 .intro-inner {
