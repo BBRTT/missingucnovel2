@@ -68,25 +68,24 @@
   pointer-events: none;
 }
 
-/* 인트로 하단 경계선 교체용 */
-#intro {
-  border-bottom: none;   /* 기존 선 제거 */
-  position: relative;    /* ::after 기준 */
-}
-
-
-#intro::after {
-  content: "";
+/* 하단 경계선 */
+#intro-border {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
 
-  height: 1px; /* 경계 두께 */
-  background: rgba(255, 255, 255, 0.25); /* 색상/투명도 조절 */
-  pointer-events: none; /* 클릭 간섭 없음 */
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.7),
+    transparent
+  );
+
+  pointer-events: none;
 }
-      
+
 /* 인트로 내용 */
 .intro-inner {
   position: relative;
@@ -96,17 +95,17 @@
 /* 제목 */
 #intro h1 {
   font-family: 'Nanum Myeongjo', serif;
-  font-size: 28px;
+  font-size: 32px;
   margin-bottom: 40px;
   color: #fff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
 }
 
 /* 설명 문구 */
 #intro p {
-  font-size: 12px;
+  font-size: 14px;
   color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.45);
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
 }
 
 /* 사라질 때 */
@@ -259,7 +258,7 @@ html, body {
 <div id="intro">
   <div class="intro-inner">
 <h1> 제발... <h1>
-
+<div id="intro-border"></div>
     <p>화면을 터치하면 이야기가 시작됩니다</p>
     <p>※ 본 글에는 사운드가 포함되어 있습니다 ※</p>
   </div>
