@@ -74,21 +74,19 @@
   position: relative;    /* ::after 기준 */
 }
 
+
 #intro::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -1px;
-  height: 24px;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.25),
-    rgba(0,0,0,0)
-  );
-}
+  bottom: 0;
 
+  height: 1px; /* 경계 두께 */
+  background: rgba(255, 255, 255, 0.25); /* 색상/투명도 조절 */
+  pointer-events: none; /* 클릭 간섭 없음 */
+}
+      
 /* 인트로 내용 */
 .intro-inner {
   position: relative;
