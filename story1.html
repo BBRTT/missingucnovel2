@@ -150,7 +150,7 @@
     #story {
       font-family: 'SUIT', sans-serif;
       max-width: 600px;
-      text-align: center;
+      text-align: left;
       margin: 0 auto;
       position: relative;
       padding: 0 10px;
@@ -188,7 +188,6 @@ img.line {
   content: "";
   display: inline-block;
   animation: dots 1.2s infinite steps(4, end);
-  color: #2C3E50;
   font-family: 'Jua', system-ui, sans-serif;
   font-weight: 400;
   text-align: center;
@@ -198,6 +197,7 @@ img.line {
 /* 작은 로딩만 더 빠르게 */
 .loading.small::after {
   animation-duration: 0.5s;
+  color: #2C3E50;
 }
     
 
@@ -206,19 +206,27 @@ img.line {
   font-size: 30px;
   letter-spacing: 7px;
 }
+.loading.small::after {
+  color: #CCCCCC; /* 연한 회색 */
+}
 
-/* 큰 로딩 */
+/* 기존 .loading.big 유지하면서 중앙 정렬 */
 .loading.big {
+  display: flex;               /* 중앙 정렬용 */
+  justify-content: center;
+  color: #2C3E50;
+  align-items: center;
+  width: 100vw;                /* 화면 전체 가로 */
+  height: 100vh;               /* 화면 전체 세로 */
   font-size: clamp(40px, 6vw, 42px);
   letter-spacing: 10px;
-  display: inline-block;
-  margin: 12px 0;
   font-weight: 600;
-  margin-top: 100vh;
-  margin-bottom: 100vh;
-
- }
-
+  margin: 0;                   /* 기존 마진 제거 */
+  position: relative;           /* 스크롤 영향 안받게 */
+}
+.loading.big::after {
+  color: #FFFFFF; /* 흰색 */
+}
 
 
 @keyframes dots {
@@ -279,17 +287,13 @@ html, body {
   <span class="loading small"></span>
 </p>
 
-<p class="line disappear">
-  <span class="loading big"></span>
-</p>
+<div class="loading big stop-bgm"><span></span></div>
 
   <p class="line bgm2-start"> 첫문장</p>
   <img class="line bgm4-start" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 
-  <p class="line black-flash"></p>
- <p class="line stop-bgm">
-   <span class="loading big"></span>
- </p>
+<!-- 빅로딩 + BGM 정지 -->
+<div class="loading big stop-bgm"><span></span></div>
 
 </div>
 
@@ -361,7 +365,20 @@ function flashBlack(duration = 800) {
     overlay.classList.remove("active");
   }, duration);
 }
+function showBigLoading(duration = 2000) {
+  const overlay = document.getElementById("black-overlay");
+  const bigLoading = document.querySelector(".line.stop-bgm");
 
+  overlay.classList.add("active"); // 블랙 화면 켜기
+  stopAllBgm();                     // BGM 정지
+
+  if (bigLoading) bigLoading.classList.remove("hide"); // 빅 로딩 보여주기
+
+  setTimeout(() => {
+    overlay.classList.remove("active"); // 블랙 화면 끄기
+    if (bigLoading) bigLoading.classList.add("hide"); // 빅 로딩 숨기기
+  }, duration);
+}
 // ------------------------------
 // 클릭 이벤트
 // ------------------------------
@@ -417,7 +434,14 @@ document.body.addEventListener("click", () => {
     behavior: window.innerWidth < 768 ? "smooth" : "auto",
     block: "center"
   });
-
+  
+// 클릭 이벤트 안에서
+if (currentLine.querySelector(".loading.big")) {
+  currentLine.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+  });
+}
   // BGM 시작/전환
   Object.keys(bgmMap).forEach(key => {
     if (currentLine.classList.contains(key)) {
