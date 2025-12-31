@@ -286,6 +286,7 @@ html, body {
   <img class="line bgm4-start" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 
   <p class="line black-flash"></p>
+  <button id="bgmStop" onclick="stopBgmSoft()" style="display:none;"></button>
 
 
 </div>
@@ -322,6 +323,26 @@ function fadeOutSmooth(audio, duration = 1500, callback) {
     }
   }
   requestAnimationFrame(step);
+}
+
+function stopBgmSoft(duration = 800) {
+  if (!currentBgm) return;
+
+  let audio = currentBgm;
+  let stepTime = 50; // ms
+  let steps = duration / stepTime;
+  let step = audio.volume / steps;
+
+  let fade = setInterval(() => {
+    if (audio.volume > step) {
+      audio.volume -= step;
+    } else {
+      audio.volume = 0;
+      clearInterval(fade);
+      audio.pause();
+      audio.currentTime = 0;
+    }
+  }, stepTime);
 }
 
 // ------------------------------
