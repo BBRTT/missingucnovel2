@@ -122,7 +122,7 @@
       font-size: 15px;               /* 기본 본문 글씨 크기 */
       line-height: 1.1;              /* 줄 간격 */
       letter-spacing: -0.015em;
-      padding: 0 10px;
+      padding: 0 8px;
       cursor: pointer;
       display: inline-block;
       flex-direction: column;
@@ -153,7 +153,7 @@
       text-align: center;
       margin: 0 auto;
       position: relative;
-      padding: 0 10px;
+      padding: 0 8px;
       line-height: 1.1;
       letter-spacing: -0.015em;
     }
@@ -209,23 +209,18 @@ img.line {
 .loading.small::after {
   color: #CCCCCC; /* 연한 회색 */
 }
-    
-/* 빅로딩 중앙 배치 */
-#big-loading {
-  display: flex;
-  justify-content: center; /* 가로 중앙 */
-  width: 100%;
-  margin: 100px 0;
-  opacity: 1;              /* 처음에는 보이도록 */
-  transition: opacity 0.8s ease; /* 부드러운 페이드 아웃 */
-}
+/* 큰 로딩 */
+.loading.big {
+  font-size: clamp(40px, 6vw, 42px);
+  letter-spacing: 10px;
+  display: inline-block;
+  margin: 12px 0;
+  font-weight: 600;
+  margin-top: 100vh;
+  margin-bottom: 100vh;
+  color: #0EA5E9; /* 조금 더 산뜻하고 현대적인 느낌 */
 
-/* 사라질 때 */
-#big-loading.hide {
-  opacity: 0;
-  pointer-events: none;    /* 클릭 방해 안 함 */
 }
-
 
 @keyframes dots {
   0%   { content: ""; }
@@ -285,17 +280,17 @@ html, body {
   <span class="loading small"></span>
 </p>
 
-<div id="big-loading">
+<p class="line disappear">
   <span class="loading big"></span>
-</div>
+</p>
 
   <p class="line bgm2-start"> 첫문장</p>
   <img class="line bgm4-start" src="KakaoTalk_20251229_220819096.jpg" alt="하루토" />
 
   <p class="line black-flash"></p>
- <div id="big-loading">
-  <span class="loading big stop-bgm"></span>
-</div>
+ <p class="line stop-bgm">
+   <span class="loading big"></span>
+ </p>
 
 </div>
 
@@ -417,27 +412,7 @@ document.body.addEventListener("click", () => {
   if (currentLine.classList.contains("black-flash")) {
     flashBlack(1000); // 200ms 깜빡임
   }
-const bigLoading = document.getElementById("big-loading");
-const lines = document.querySelectorAll(".line");
-let index = 0;
 
-document.body.addEventListener("click", () => {
-  // 빅로딩이 보이면 먼저 페이드 아웃
-  if (bigLoading && !bigLoading.classList.contains("hide")) {
-    bigLoading.classList.add("hide");
-    setTimeout(() => {
-      bigLoading.style.display = "none"; // 완전히 제거
-    }, 800); // CSS transition 시간과 맞춤
-    return; // 첫 클릭은 빅로딩만 사라짐
-  }
-
-  // 이후 본문 글 등장
-  if (index >= lines.length) return;
-  const currentLine = lines[index];
-  currentLine.classList.add("show");
-  currentLine.scrollIntoView({ behavior: "smooth", block: "center" });
-  index++;
-});
   // 자동 스크롤
   currentLine.scrollIntoView({
     behavior: window.innerWidth < 768 ? "smooth" : "auto",
