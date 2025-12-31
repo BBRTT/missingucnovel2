@@ -241,6 +241,7 @@ html, body {
   opacity: 0; /* 처음에는 안 보이게 */
   pointer-events: none; /* 클릭 방해 안 함 */
   transition: opacity 1.0s ease; /* 천천히 나타나고 사라짐 */
+  overflow: hidden;     /* 스크롤 방지 */
 }
 
 /* 나타낼 때 */
@@ -412,7 +413,12 @@ document.body.addEventListener("click", () => {
   if (currentLine.classList.contains("black-flash")) {
     flashBlack(1000); // 200ms 깜빡임
   }
-
+} else {
+  currentLine.scrollIntoView({
+    behavior: window.innerWidth < 768 ? "smooth" : "auto",
+    block: "center"
+  });
+}
   // 자동 스크롤
   currentLine.scrollIntoView({
     behavior: window.innerWidth < 768 ? "smooth" : "auto",
