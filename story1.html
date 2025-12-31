@@ -365,20 +365,8 @@ function flashBlack(duration = 800) {
     overlay.classList.remove("active");
   }, duration);
 }
-function showBigLoading(duration = 2000) {
-  const overlay = document.getElementById("black-overlay");
-  const bigLoading = document.querySelector(".line.stop-bgm");
 
-  overlay.classList.add("active"); // 블랙 화면 켜기
-  stopAllBgm();                     // BGM 정지
 
-  if (bigLoading) bigLoading.classList.remove("hide"); // 빅 로딩 보여주기
-
-  setTimeout(() => {
-    overlay.classList.remove("active"); // 블랙 화면 끄기
-    if (bigLoading) bigLoading.classList.add("hide"); // 빅 로딩 숨기기
-  }, duration);
-}
 // ------------------------------
 // 클릭 이벤트
 // ------------------------------
