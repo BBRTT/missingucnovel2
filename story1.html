@@ -146,22 +146,22 @@ img.line {
 }
 
 .dialogue{
-  font-weight:500;
   opacity:0;
-  animation:fadeIn .25s ease-out forwards;
+  font-weight:500;
+  transition:opacity .25s ease-out;
 }
+
+.dialogue.show{
+  opacity:1;
+  text-shadow:
+    0 0 2px rgba(255,235,170,.85),
+    0 0 6px rgba(255,235,170,.45);
+}
+
 .dialogue.em{
-  text-shadow:0 0 1px rgba(255,235,170,.7);
-}
-@keyframes fadeIn{
-  from{
-    opacity:0;
-    text-shadow:0 0 1.2px rgba(255,235,170,.75);
-  }
-  to{
-    opacity:1;
-    text-shadow:0 0 .8px rgba(255,235,170,.55);
-  }
+  text-shadow:
+    0 0 3px rgba(255,235,170,.95),
+    0 0 8px rgba(255,235,170,.6);
 }
 /* 기본 로딩 (big 포함) */
 .loading::after {
@@ -185,7 +185,8 @@ img.line {
 .loading.small {
   font-size: 30px;
   letter-spacing: 7px;
-  margin: 0.2em 0;
+  margin:0;
+  padding:.05em 0;
 }
 .loading.small::after {
   color: #9CA3AF; /* 연한 회색 */
@@ -291,9 +292,9 @@ html, body {
 
   
   </p>
-  <p class="dialogue">“기다린거야? 안 먹고?”</p>
-  <p class="dialogue">“아... 네”</p>
-  <p class="dialogue">“안 그래도 되는데. 너 먹으라고 온거야. 귀엽기는”</p>
+  <p class="dialogue show">“기다린거야? 안 먹고?”</p>
+  <p class="dialogue show">“아... 네”</p>
+  <p class="dialogue show">“안 그래도 되는데. 너 먹으라고 온거야. 귀엽기는”</p>
   <p class="line">
     
     쌤이 비워진 앞접시에 파스타를 채워줘도 반응을 하지못한 건 아무래도 머릿속에 눈치없이 남아있는 생각 때문이다. 정신을 못차리는 자신이 답답하고 계속 집중 못할 바에는 그냥 차라리 꺼내는게. 일단 지난주 이야기를 꺼내기로 한다.
@@ -301,17 +302,17 @@ html, body {
   
   </p>
 
-<p class="dialogue">“그러니까.. 눈빛이 살아있다고 해야하나. 표정이 다양하다고 해야하나. 눈썹도 찐하고 눈동자는 또 너무 검어서 앞에서 무슨 말을 하든 심판 당하고 간파 당할 것 같은. 자아가 뚜렷해보여서 어딘가 모르게 자꾸 시선이 가는.. 그런 묘한 기운이 있는 것 같은 그런 얼굴이래요.”
+<p class="dialogue show">“그러니까.. 눈빛이 살아있다고 해야하나. 표정이 다양하다고 해야하나. 눈썹도 찐하고 눈동자는 또 너무 검어서 앞에서 무슨 말을 하든 심판 당하고 간파 당할 것 같은. 자아가 뚜렷해보여서 어딘가 모르게 자꾸 시선이 가는.. 그런 묘한 기운이 있는 것 같은 그런 얼굴이래요.”
 </p>
-  <p class="dialogue">“...누가?”</p>
-  <p class="dialogue">“.. 제가요”</p>
-  <p class="dialogue">“아니아니,누가 그랬냐고”</p>
+  <p class="dialogue show">“...누가?”</p>
+  <p class="dialogue show">“.. 제가요”</p>
+  <p class="dialogue show">“아니아니,누가 그랬냐고”</p>
   <p class="line">
 
 웃음이 터진 쌤이 손사래를 치며 말한다. 누가 그런 소릴해? 그 질문에 바로 대답하지 못하고 다시 생각에 잠긴 듯 눈만 깜빡이니 쌤은 고개를 들어올리며 바라본다. 손가락으로 턱을 쓸며 나의 대답을 기다린다. 그러나 나는 말을 할 생각이 없다.
 
 </p>
-  <p class="dialogue em">“그거 그냥 한마디로 이쁘다는거잖아”</p>
+  <p class="dialogue show em">“그거 그냥 한마디로 이쁘다는거잖아”</p>
   <p class="line">
 
 눈이 반짝이고 자꾸만 시선이 간다잖아. 그게 이쁘단 소리지.
@@ -322,19 +323,19 @@ html, body {
 
  </p>
 
-  <p class="dialogue">“근데 진짜 누구야? 어?”</p>
-  <p class="dialogue">“그냥.. 모르는 사람이요”</p>
-  <p class="dialogue">“음…? 사이비..?”</p>
-  <p class="dialogue">“아뇨, 그냥 주말에 재미로 사주봤어요”</p>
-  <p class="dialogue">
+  <p class="dialogue show">“근데 진짜 누구야? 어?”</p>
+  <p class="dialogue show">“그냥.. 모르는 사람이요”</p>
+  <p class="dialogue show">“음…? 사이비..?”</p>
+  <p class="dialogue show">“아뇨, 그냥 주말에 재미로 사주봤어요”</p>
+  <p class="dialogue show">
 
 응 그래.. 모르는 사람이긴 하네. 쌤이 실망한 듯 포크로 샐러드를 푹푹 쑤신다. 괜시리 머쓱해진다. 근데 사주에서 그런 얘기도 해줘? 아, 거기서 별의 별 얘기를 다 해주더라고요. 제 체질이 생각보다 신체적 반응이 빠른 편이래요. 오 체질까지… 그 말을 하는 쌤은 흥미가 팍 식은 듯 보였다. 그저 불신이다.
 
   </p>
-  <p class="dialogue">“쌤 안 믿죠”</p>
-  <p class="dialogue">“그게 아니라, 관상에 체질까지 봐주는 점집은 처음 봐서. 원래 그런거 안 믿기도 하지만은”</p>
-  <p class="dialogue">“.. 사실 저도 별로 안 믿고 싶어요. 거기서 안 좋은 소릴 들어서”</p>
-  <p class="dialogue">“무슨 소릴 들었는데?”</p>
+  <p class="dialogue show">“쌤 안 믿죠”</p>
+  <p class="dialogue show">“그게 아니라, 관상에 체질까지 봐주는 점집은 처음 봐서. 원래 그런거 안 믿기도 하지만은”</p>
+  <p class="dialogue show">“.. 사실 저도 별로 안 믿고 싶어요. 거기서 안 좋은 소릴 들어서”</p>
+  <p class="dialogue show">“무슨 소릴 들었는데?”</p>
   <p class="line">
     
     쌤은 다시 흥미가 돌아온 듯 또 다시 눈을 반짝인다. 덕분에 말을 꺼내기가 싫어졌다. 입맛이 없어져 포크를 아예 내려놓는다. 지난주에 사주를 보러 간 건 우연이지만 내게 주어질 한달을 판정 받은 일은 어떠한 암시였다. 그런 데서 안 좋은 소릴 들으면 똥 밟았다고 귀를 씻어내면 되는데 그럴 수가 없는건 이미 조금은 불안했으니까.</p> 
@@ -342,10 +343,10 @@ html, body {
   
   
   </p>
-  <p class="dialogue">“그러니까 그게… 대학을 물어봤는데요”</p>
-<p class="dialogue">“물어봤는데…?”</p>
-<p class="dialogue">“대학도 문제지만 상황이 안 좋아진대요. 성적 얘기냐니까 그런게 아니래요. 또, 주변 있던 사람들이 떠난다고 하고… 앞으로 한달은 혼란스러울 거래요. 아 모르겠어요, 듣고 싶은 말 빼고 다 들은거 같아요.”</p>
-<p class="dialogue">
+  <p class="dialogue show">“그러니까 그게… 대학을 물어봤는데요”</p>
+<p class="dialogue show">“물어봤는데…?”</p>
+<p class="dialogue show">“대학도 문제지만 상황이 안 좋아진대요. 성적 얘기냐니까 그런게 아니래요. 또, 주변 있던 사람들이 떠난다고 하고… 앞으로 한달은 혼란스러울 거래요. 아 모르겠어요, 듣고 싶은 말 빼고 다 들은거 같아요.”</p>
+<p class="dialogue show">
   
 
 
@@ -356,11 +357,11 @@ html, body {
 
 
 </p>
-<p class="dialogue">“여주야. 이 타이밍에 얘기하는게 좀 애매하긴 한데.”</p>
-<p class="dialogue">“왜요...?”</p>
-<p class="dialogue">“쌤이 학원에 다닐 거 같아”</p>
-<p class="dialogue">“학원이요?”</p>
-<p class="dialogue">“응. 강사로. 그래서.. 아마 이번주가 마지막일 거 같아“</p>
+<p class="dialogue show">“여주야. 이 타이밍에 얘기하는게 좀 애매하긴 한데.”</p>
+<p class="dialogue show">“왜요...?”</p>
+<p class="dialogue show">“쌤이 학원에 다닐 거 같아”</p>
+<p class="dialogue show">“학원이요?”</p>
+<p class="dialogue show">“응. 강사로. 그래서.. 아마 이번주가 마지막일 거 같아“</p>
 <p class="line">
   
 
@@ -371,13 +372,13 @@ html, body {
 
 
 </p>
-<p class="dialogue">“죄송해요 너무 갑작스러워서..“</p>
-<p class="dialogue">”아니야, 놀랬지..?“</p>
-<p class="dialogue">”네… 전혀 생각을 못했어요..”</p>
-<p class="dialogue">“진짜 최근에 결정된거라 얘기를 못했어”</p>
-<p class="dialogue">“… 네.”</p>
-<p class="dialogue">“… 아까 너무 심각하게 얘기해서 뭐 죽는 소리 들은거 아닌가 했네. 여주는 성적 유지만 하면 되니까 너무 걱정하지마. 알겠지?”</p>
-<p class="dialogue">“네… 그, 쌤 축하드려요 정말..”</p>
+<p class="dialogue show">“죄송해요 너무 갑작스러워서..“</p>
+<p class="dialogue show">”아니야, 놀랬지..?“</p>
+<p class="dialogue show">”네… 전혀 생각을 못했어요..”</p>
+<p class="dialogue show">“진짜 최근에 결정된거라 얘기를 못했어”</p>
+<p class="dialogue show">“… 네.”</p>
+<p class="dialogue show">“… 아까 너무 심각하게 얘기해서 뭐 죽는 소리 들은거 아닌가 했네. 여주는 성적 유지만 하면 되니까 너무 걱정하지마. 알겠지?”</p>
+<p class="dialogue show">“네… 그, 쌤 축하드려요 정말..”</p>
 <p class="line">
 
 
