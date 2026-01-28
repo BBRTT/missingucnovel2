@@ -450,13 +450,13 @@ function stopAllBgm() {
 // 글 + BGM 변수
 // ------------------------------
 
-const lines = document.querySelectorAll('.line'); // .line 요소 모두 선택
-let index = 0; // 현재 등장한 줄 카운트
+const lines = document.querySelectorAll('.line'); 
+let index = 0; // 현재 보여줄 줄
 
 document.addEventListener('click', () => {
   if (index < lines.length) {
-    lines[index].classList.add('show'); // CSS에서 .show 클래스가 opacity 1, text-shadow 적용
-    index++;
+    lines[index].classList.add('show'); // 딱 한 줄만
+    index++; // 다음 줄로 이동
   }
 });
 
