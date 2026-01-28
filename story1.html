@@ -451,14 +451,6 @@ function stopAllBgm() {
 const lines = document.querySelectorAll('.line'); 
 let index = 0; // 현재 보여줄 줄
 
-document.addEventListener('click', () => {
-  if (index < lines.length) {
-    lines[index].classList.add('show'); // 딱 한 줄만
-    index++; // 다음 줄로 이동
-  }
-});
-
-
 const bgmMap = {
   "bgm1-start": document.getElementById("bgm1"),
   "bgm2-start": document.getElementById("bgm2"),
