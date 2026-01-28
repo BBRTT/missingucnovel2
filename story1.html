@@ -147,21 +147,21 @@ img.line {
 
 .line.dialogue{
   opacity:0;
-  transition:opacity .25s ease-out;
-  /* font-weight 제거 → 볼드 없음 */
+  color: #333; /* 글자 색 추가 */
+  transition: opacity .25s ease-out;
 }
 
 .line.dialogue.on{
   opacity:1;
   text-shadow:
-    0 0 2px rgba(255,240,200,.6),
-    0 0 5px rgba(255,240,200,.35);
+    0 0 2px rgba(255,220,150,.6),
+    0 0 5px rgba(255,220,150,.35);
 }
 
 .line.dialogue.em.on{
   text-shadow:
-    0 0 3px rgba(255,240,200,.75),
-    0 0 7px rgba(255,240,200,.45);
+    0 0 3px rgba(255,220,150,.75),
+    0 0 7px rgba(255,220,150,.45);
 }
 /* 기본 로딩 (big 포함) */
 .loading::after {
